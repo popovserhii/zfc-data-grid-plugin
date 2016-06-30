@@ -1,6 +1,6 @@
 {
-  "name": "agerecompany/zfc-data-grid-manager",
-  "description": "ZF2 module manager which extend possibility ZfcDatagrid",
+  "name": "agerecompany/zfc-data-grid",
+  "description": "ZF2 module manager which extend possibility of ZfcDatagrid",
   "type": "library",
   "license": "MIT",
   "keywords": [
@@ -23,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Agere\\ZfcDataGridManager\\": "src/"
+      "Agere\\ZfcDataGrid\\": "src/"
     }
   }
 }
