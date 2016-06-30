@@ -4,9 +4,9 @@
   "type": "library",
   "license": "MIT",
   "keywords": [
-    "data grid",
     "grid",
     "zfc-datagrid",
+    "zfc-datagrid factory",
     "agere"
   ],
   "authors": [
@@ -23,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Agere\\ZfcDataGridPluginManager\\": "src/"
+      "Agere\\ZfcDataGridManager\\": "src/"
     }
   }
 }
