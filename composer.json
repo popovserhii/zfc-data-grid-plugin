@@ -1,5 +1,5 @@
 {
-  "name": "agerecompany/zfc-data-grid-plugin-manager",
+  "name": "agerecompany/zfc-data-grid-manager",
   "description": "ZF2 module manager which extend possibility ZfcDatagrid",
   "type": "library",
   "license": "MIT",
