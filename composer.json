@@ -1,0 +1,29 @@
+{
+  "name": "agerecompany/zfc-data-grid-plugin-manager",
+  "description": "ZF2 module manager which extend possibility ZfcDatagrid",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "data grid",
+    "grid",
+    "zfc-datagrid",
+    "agere"
+  ],
+  "authors": [
+    {
+      "name": "Sergiy Popov",
+      "email": "popow.sergiy@gmail.com",
+      "homepage": "http://agere.com.ua/",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Agere\\ZfcDataGridPluginManager\\": "src/"
+    }
+  }
+}
