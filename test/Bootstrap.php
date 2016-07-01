@@ -6,9 +6,7 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 
 ini_set('display_errors', 'on');
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 error_reporting(-1);
-chdir(__DIR__);
 
 /**
  * Test bootstrap, for setting up autoloading
@@ -41,7 +39,7 @@ class Bootstrap
         ];
 
         $applicationConfig = require('../config/application.config.php.sample');
-        
+
         $config = ArrayUtils::merge($testConfig, $applicationConfig);
 
         // if NEED use full project configuration
