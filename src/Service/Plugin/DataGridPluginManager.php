@@ -3,17 +3,18 @@
  * DataGrid Plugin Manager
  *
  * @category Agere
- * @package Agere_Grid
+ * @package Agere_ZfcDataGrid
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 09.03.15 21:29
  */
-namespace Agere\Grid\Service\Plugin;
+namespace Agere\ZfcDataGrid\Service\Plugin;
 
 use Zend\Stdlib\Exception;
 use Zend\ServiceManager\AbstractPluginManager;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
+use ZfcDatagrid\Column\Action;
 
 class DataGridPluginManager extends AbstractPluginManager
 {
@@ -28,6 +29,11 @@ class DataGridPluginManager extends AbstractPluginManager
         'select' => Column\Select::class,
         'action' => Column\Action::class,
         'externaldata' => Column\ExternalData::class,
+
+        // action
+        'button' => Action\Button::class,
+        'checkbox' => Action\Checkbox::class,
+        'icon' => Action\Icon::class,
 
         // type
         'image' => Type\Image::class,

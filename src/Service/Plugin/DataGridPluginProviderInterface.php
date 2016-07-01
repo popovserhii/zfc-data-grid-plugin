@@ -7,7 +7,7 @@
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 09.03.15 22:50
  */
-namespace Agere\Grid\Service\Plugin;
+namespace Agere\ZfcDataGrid\Service\Plugin;
 
 interface DataGridPluginProviderInterface
 {

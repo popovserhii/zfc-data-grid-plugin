@@ -1,5 +1,5 @@
 <?php
-namespace Agere\ZfcImporter;
+namespace Agere\ZfcDataGrid;
 
 class Module
 {
