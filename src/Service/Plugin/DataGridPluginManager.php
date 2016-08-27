@@ -38,9 +38,9 @@ class DataGridPluginManager extends AbstractPluginManager
         // type
         'image' => Type\Image::class,
         'number' => Type\Number::class,
-        'dateTime' => Type\DateTime::class,
-        'phpArray' => Type\PhpArray::class,
-        'phpString' => Type\PhpString::class,
+        'datetime' => Type\DateTime::class,
+        'phparray' => Type\PhpArray::class,
+        'phpstring' => Type\PhpString::class,
 
         // style
         'align' => Style\Align::class,
