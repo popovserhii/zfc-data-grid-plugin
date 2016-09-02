@@ -72,7 +72,15 @@ class ColumnFactory
         /** @var \ZfcDatagrid\Column\Action $object */
         if (isset($config['construct'])) {
             $className = $cpm->getInvokableClass($className);
-            $object = new $className(...$config['construct']);
+            //$object = new $className(...$config['construct']);
+
+            // @link http://stackoverflow.com/a/2409288/1335142
+            //if (version_compare(phpversion(), '7.0.0', '>=')) {
+            //	$object = new $className(eval('...') . $config['construct']);
+            //} else {
+            $reflect = new \ReflectionClass($className);
+            $object = $reflect->newInstanceArgs($config['construct']);
+            //}
         } else {
             $object = $cpm->get($className);
         }
@@ -112,10 +120,14 @@ class ColumnFactory
                         $object->{$method}($a, $v);
                     }
                 } else {
-                    $object->{$method}(...$value);
+                    //if (version_compare(phpversion(), '5.6.0', '>=')) {
+                    //	$object->{$method}(eval('...') . $value);
+                    //} else {
+                    call_user_func_array([$object, $method], $value);
+                    //}
                 }
                 //\Zend\Debug\Debug::dump($method); die(__METHOD__);
-            //} elseif (method_exists($object, $method)) {
+                //} elseif (method_exists($object, $method)) {
             } else {
                 $object->{$method}($value);
 
