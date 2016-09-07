@@ -115,6 +115,45 @@ class InvoiceGrid extends AbstractGrid
       		'link' => ['href' => '/invoice/view', 'placeholder_column' => $colId] // special config
       	]],
       ]);
+      
+      $formatter = <<<FORMATTER_JS
+      function (value, options, rowObject) {
+        return '<div class="input-btn-group">'
+        	+ '<button class="btn btn-default btn-xs barcode-print" title="{$this->__('Print Bar code')}">' + value + '</button>'
+          + '</div>';
+      }
+      FORMATTER_JS;
+      
+      // native configuration
+      #$formatterLink = new Formatter\Barcode();
+      #$formatterLink->setSourceAttr('data-barcode');
+      #$formatterLink->setAttribute('class', 'barcode-icon');
+      #$formatterLink->setBasedOn($grid->getColumnByUniqueId('product_id'));
+      #$actions = new Column\Action('barcode');
+      #$actions->setLabel(' ');
+      #$actions->setTranslationEnabled();
+      #$actions->setFormatters([$formatterLink]);
+      #$actions->setRendererParameter('formatter', $formatterJs, 'jqGrid');
+      #$actions->setWidth(1);
+      #$grid->addColumn($actions);
+      
+      // array configuration
+      $this->add([
+        'name' => 'Action',
+        'construct' => ['barcode'],
+        'label' => ' ',
+        'translation_enabled' => true,
+        'width' => 1,
+        'renderer_parameter' => ['formatter', $formatter, 'jqGrid'],
+        'formatters' => [[
+      	  'name' => 'Barcode',
+      	  'source_attr' => 'data-barcode',
+      	  //'placeholder_column' => $grid->getColumnByUniqueId('product_id'),
+      	  'attributes' => [
+      		  'class' => 'barcode-icon'
+      	  ],
+        ]]
+      ]);
 	}
 }
 ```
