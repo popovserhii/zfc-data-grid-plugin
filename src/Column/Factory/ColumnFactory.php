@@ -11,6 +11,7 @@ namespace Agere\ZfcDataGrid\Column\Factory;
 
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
+use ZfcDatagrid\Column\Formatter;
 use Agere\ZfcDataGrid\Service\Plugin\DataGridPluginManager;
 
 class ColumnFactory
@@ -62,11 +63,11 @@ class ColumnFactory
         $cpm = $this->getDataGridPluginManager();
 
         //$className = is_array($config['name']) ? $config['name']['name'] : $config['name'];
-        $className = $config['name'];
-        if (!$cpm->has($config['name'])) {
-            throw new Exception\RuntimeException(
-                sprintf('%s "%s" not fount in the "data_grid_plugins" key of configuration array', $group, $config['name'])
-            );
+        $className = $config['name'] . $group;
+        if (!$cpm->has($className)) {
+            throw new Exception\RuntimeException(sprintf(
+                '%s "%s" not fount in the "data_grid_plugins" key of configuration array', $group, $config['name']
+            ));
         }
 
         /** @var \ZfcDatagrid\Column\Action $object */
@@ -94,8 +95,8 @@ class ColumnFactory
             $suffix = ucfirst($filter->filter($key));
             // create sub objects: action, formatter etc.
             if (method_exists($this, $method = 'create' . $suffix)) {
-                //\Zend\Debug\Debug::dump([$method, $suffix, __METHOD__.__LINE__]);
                 $options = $this->{$method}($value);
+                //\Zend\Debug\Debug::dump([$suffix, $options, __METHOD__.__LINE__]);
                 $object->{'set' . $suffix}($options);
 
                 continue;
@@ -116,21 +117,30 @@ class ColumnFactory
                             ));
                         }
                     }
-                    foreach ($value as $a => $v) { // $a -> attribute, $v -> value
-                        $object->{$method}($a, $v);
+                    foreach ($value as $attribute => $val) {
+                        $object->{$method}($attribute, $val);
                     }
                 } else {
+                    // prepare special attribute like link or etc.
+                    if (method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix)) {
+                        $value = $this->{$prepareMethod}($object, $value);
+                    }
+
                     //if (version_compare(phpversion(), '5.6.0', '>=')) {
                     //	$object->{$method}(eval('...') . $value);
                     //} else {
-                    call_user_func_array([$object, $method], $value);
+                    //call_user_func_array([$object, $method], $value);
                     //}
+
+                    if (is_array($value)) {
+                        call_user_func_array([$object, $method], $value);
+                    } else {
+                        $object->{$method}($value);
+                    }
                 }
                 //\Zend\Debug\Debug::dump($method); die(__METHOD__);
-                //} elseif (method_exists($object, $method)) {
             } else {
                 $object->{$method}($value);
-
             }
         }
 
@@ -174,5 +184,25 @@ class ColumnFactory
         $type = $this->doCreate($config, 'Type');
 
         return $type;
+    }
+
+    /**
+     * Prepare "link" attribute value based on special array configuration
+     *
+     * Config key:
+     *      href - not changed link path
+     *      placeholder_column - Column object for get placeholder value
+     *
+     * @param Formatter\Link $formatter
+     * @param $param
+     * @return string
+     */
+    public function prepareAttributeLink(Formatter\Link $formatter, $param)
+    {
+        if (!is_array($param)) {
+            return $param;
+        }
+
+        return $param['href'] . '/' . $formatter->getColumnValuePlaceholder($param['placeholder_column']);
     }
 }

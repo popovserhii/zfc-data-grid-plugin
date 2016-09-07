@@ -15,6 +15,7 @@ use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Action;
+use ZfcDatagrid\Column\Formatter;
 
 class DataGridPluginManager extends AbstractPluginManager
 {
@@ -26,31 +27,39 @@ class DataGridPluginManager extends AbstractPluginManager
      */
     protected $invokableClasses = [
         // column
-        'select' => Column\Select::class,
-        'action' => Column\Action::class,
-        'externaldata' => Column\ExternalData::class,
+        'selectcolumn' => Column\Select::class,
+        'actioncolumn' => Column\Action::class,
+        'externaldatacolumn' => Column\ExternalData::class,
 
         // action
-        'button' => Action\Button::class,
-        'checkbox' => Action\Checkbox::class,
-        'icon' => Action\Icon::class,
+        'buttonaction' => Action\Button::class,
+        'checkboxaction' => Action\Checkbox::class,
+        'iconaction' => Action\Icon::class,
 
         // type
-        'image' => Type\Image::class,
-        'number' => Type\Number::class,
-        'datetime' => Type\DateTime::class,
-        'phparray' => Type\PhpArray::class,
-        'phpstring' => Type\PhpString::class,
+        'imagetype' => Type\Image::class,
+        'numbertype' => Type\Number::class,
+        'datetimetype' => Type\DateTime::class,
+        'phparraytype' => Type\PhpArray::class,
+        'phpstringtype' => Type\PhpString::class,
 
         // style
-        'align' => Style\Align::class,
-        'backgroundcolor' => Style\BackgroundColor::class,
-        'bold' => Style\Bold::class,
-        'color' => Style\Color::class,
-        'cssclass' => Style\CSSClass::class,
-        'html' => Style\Html::class,
-        'italic' => Style\Italic::class,
-        'strikethrough' => Style\Strikethrough::class,
+        'alignstyle' => Style\Align::class,
+        'backgroundcolorstyle' => Style\BackgroundColor::class,
+        'boldstyle' => Style\Bold::class,
+        'colorstyle' => Style\Color::class,
+        'cssclassstyle' => Style\CSSClass::class,
+        'htmlstyle' => Style\Html::class,
+        'italicstyle' => Style\Italic::class,
+        'strikethroughstyle' => Style\Strikethrough::class,
+
+        // formatter
+        'emailformatter' => Formatter\Email::class,
+        'filesizeformatter' => Formatter\FileSize::class,
+        'generatelinkformatter' => Formatter\GenerateLink::class,
+        'htmltagformatter' => Formatter\HtmlTag::class,
+        'imageformatter' => Formatter\Image::class,
+        'linkformatter' => Formatter\Link::class,
     ];
 
     public function validatePlugin($plugin)
