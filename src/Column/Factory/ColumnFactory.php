@@ -132,6 +132,7 @@ class ColumnFactory
                     //call_user_func_array([$object, $method], $value);
                     //}
 
+                    //\Zend\Debug\Debug::dump([$method, $value]); //die(__METHOD__);
                     if (is_array($value)) {
                         call_user_func_array([$object, $method], $value);
                     } else {
