@@ -36,6 +36,11 @@ abstract class AbstractGrid implements InitializableInterface
     {
         return $this->dataGrid;
     }
+    
+    public function getColumnFactory()
+    {
+        return $this->columnFactory;
+    }
 
     public function add(array $columnConfig)
     {
