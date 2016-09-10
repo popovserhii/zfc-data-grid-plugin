@@ -23,8 +23,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Agere\\ZfcDataGrid\\": "src/",
-      "AgereTest\\ZfcDataGrid\\": "test/"
+      "Agere\\ZfcDataGridPlugin\\": "src/",
+      "AgereTest\\ZfcDataGridPlugin\\": "test/"
     }
   }
 }
