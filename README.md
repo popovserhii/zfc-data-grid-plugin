@@ -7,7 +7,6 @@ This module register new ```data_grid_plugins``` global config key and add ```Co
 
 Working principle is using ZF2 way like ```Zend\Form``` which use array configuration for create form elements.
 
-D:\WebServer\git\storage-geely-kz\vendor\agerecompany\zfc-data-grid\config\application.config.php.sample
 ## Usage
 Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid/config/application.config.php.sample``` in global ```config/application.config.php```
 
