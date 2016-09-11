@@ -1,5 +1,5 @@
 <?php
-namespace Agere\ZfcDataGrid;
+namespace Agere\ZfcDataGridPlugin;
 
 class Module
 {

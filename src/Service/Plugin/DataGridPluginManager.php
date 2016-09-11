@@ -7,7 +7,7 @@
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 09.03.15 21:29
  */
-namespace Agere\ZfcDataGrid\Service\Plugin;
+namespace Agere\ZfcDataGridPlugin\Service\Plugin;
 
 use Zend\Stdlib\Exception;
 use Zend\ServiceManager\AbstractPluginManager;

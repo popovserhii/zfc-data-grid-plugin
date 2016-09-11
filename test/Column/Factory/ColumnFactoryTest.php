@@ -17,7 +17,7 @@ use ZfcDatagrid\Column\Action;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
 use PHPUnit_Framework_TestCase as TestCase;
-use Agere\ZfcDataGrid\Column\Factory\ColumnFactory;
+use Agere\ZfcDataGridPlugin\Column\Factory\ColumnFactory;
 use AgereTest\ZfcDataGrid\Bootstrap;
 
 class ColumnFactoryTest extends TestCase

@@ -7,12 +7,12 @@
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 19.12.15 17:44
  */
-namespace Agere\ZfcDataGrid\Column\Factory;
+namespace Agere\ZfcDataGridPlugin\Column\Factory;
 
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use ZfcDatagrid\Column\Formatter;
-use Agere\ZfcDataGrid\Service\Plugin\DataGridPluginManager;
+use Agere\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
 
 class ColumnFactory
 {
