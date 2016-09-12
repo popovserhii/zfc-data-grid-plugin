@@ -12,7 +12,7 @@ Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid-p
 
 Simplest will be create abstract class for aggregate Grid and Factory
 ```php
-namespace Agere\Grid\Block;
+namespace Agere\ZfcDataGrid\Block;
 
 use Zend\Stdlib\InitializableInterface;
 use ZfcDatagrid\Datagrid;
@@ -57,7 +57,7 @@ In general is need create new Grid class which will be response for concrete Gri
 ```php
 namespace Agere\Invoice\Block\Grid;
 
-use Agere\Grid\Block\AbstractGrid;
+use Agere\ZfcDataGrid\Block\AbstractGrid;
 
 class InvoiceGrid extends AbstractGrid
 {
