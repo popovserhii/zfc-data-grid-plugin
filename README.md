@@ -209,3 +209,31 @@ FORMATTER_JS;
     }
 }
 ```
+
+### Advanced usage
+Sometimes we need use built-in database functions for aggregate result. For this purpose we need give ```\Zend\Db\Sql\Expression``` or ```\Doctrine\ORM\Query\Expr\Func``` as argument to ```Select``` column.
+> Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
+
+```
+$this->add([
+	'name' => 'Select',
+	//'construct' => [new Expr\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // doctrine usage
+	//'construct' => [new Expr\Func('GROUP_CONCAT', ['serial.number']), 'serial_all'], // doctrine usage
+	'construct' => [new Sql\Expression('GROUP_CONCAT(serial.number)'), 'serial_all'], // zend table usage
+	'label' => 'Serial number',
+	'width' => 1,
+]);
+```
+
+```
+$this->add([
+	'name' => 'Select',
+	// doctrine doesn't support this expression
+	//'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE 0 END']), 'serial_id'],
+	
+	// zend table usage
+	'construct' => [new Sql\Expression('GROUP_CONCAT(CASE WHEN serial.cartItemId > 0 THEN serial.number END)'), 'serial_id'],
+	'label' => 'Serial number',
+	'width' => 1,
+]);
+```
