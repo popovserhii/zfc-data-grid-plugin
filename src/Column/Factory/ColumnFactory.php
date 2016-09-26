@@ -117,9 +117,19 @@ class ColumnFactory
                             ));
                         }
                     }
+
+                    //\Zend\Debug\Debug::dump([$method, $value]); //die(__METHOD__);
+
+
                     foreach ($value as $attribute => $val) {
-                        $object->{$method}($attribute, $val);
+                        if (is_array($val)) {
+                            call_user_func_array([$object, $method], $val);
+                        } else {
+                            $object->{$method}($attribute, $val);
+                        }
                     }
+
+
                 } else {
                     // prepare special attribute like link or etc.
                     if (method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix)) {
