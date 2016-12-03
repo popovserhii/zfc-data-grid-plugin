@@ -21,8 +21,9 @@ class ColumnFactory
 
     protected $columnPluginManager;
 
-    public function __construct(DataGridPluginManager $columnPluginManager)
+    public function __construct(DataGridPluginManager $columnPluginManager, $config)
     {
+        $this->config = $config;
         $this->columnPluginManager = $columnPluginManager;
     }
 
@@ -56,13 +57,19 @@ class ColumnFactory
 
     protected function doCreate($config, $group)
     {
-        if (!isset($config['name']) || !$config['name']) {
+        // suppose $config value can be simple string as ['type' => 'DateTime']
+        if (is_string($config)) {
+            $config = ['name' => $config];
+        }
+
+        if (/*is_array($config) && */(!isset($config['name']) || !$config['name'])) {
             throw new Exception\RuntimeException($group . ' "name" key must be set and cannot be empty');
         }
 
         $cpm = $this->getDataGridPluginManager();
 
         //$className = is_array($config['name']) ? $config['name']['name'] : $config['name'];
+        //$className = (isset($config['name']) ? $config['name'] : $config) . $group;
         $className = $config['name'] . $group;
         if (!$cpm->has($className)) {
             throw new Exception\RuntimeException(sprintf(
@@ -86,8 +93,74 @@ class ColumnFactory
             $object = $cpm->get($className);
         }
 
+        $this->configSetter($object, $config);
+
+        return $object;
+    }
+
+    public function createActions($config)
+    {
+        $actions = [];
+        foreach ($config as $actionConfig) {
+            $actions[] = $this->doCreate($actionConfig, 'Action');
+        }
+
+        return $actions;
+    }
+
+    public function createFormatters($config)
+    {
+        $formatters = [];
+        foreach ($config as $formatterConfig) {
+            $formatters[] = $this->doCreate($formatterConfig, 'Formatter');
+        }
+
+        return $formatters;
+    }
+
+    public function createStyles($config)
+    {
+        $styles = [];
+        foreach ($config as $styleConfig) {
+            $styles[] = $this->doCreate($styleConfig, 'Style');
+        }
+
+        return $styles;
+    }
+
+    public function createType($config)
+    {
+        /** @var \ZfcDatagrid\Column\Type\Number $type */
+        $type = $this->doCreate($config, 'Type');
+
+        return $type;
+    }
+
+    public function configSetter($object, $config)
+    {
+        //$cpm = $this->getDataGridPluginManager();
+
+        $merged = $config;
+        $generalConfig = $this->getConfig();
+        $className = get_class($object);
+
+        // merge config based on class name
+        if (isset($generalConfig['data_grid_plugins_config'][$className])) {
+            $pluginConfig = $generalConfig['data_grid_plugins_config'][$className];
+            $merged = array_merge($pluginConfig, $merged);
+        }
+
+        // merge config based on column Type
+        if (($classTypeName = $this->getClassName($config, 'type'))
+            && isset($generalConfig['data_grid_plugins_config']['type_of'][$classTypeName])
+        ) {
+            $typeConfig = $generalConfig['data_grid_plugins_config']['type_of'][$classTypeName];
+            $merged = array_merge($typeConfig, $merged);
+        }
+
+        // set object parameters based on config
         $filter = new SeparatorToCamelCase('_');
-        foreach ($config as $key => $value) {
+        foreach ($merged as $key => $value) {
             if (in_array($key, ['name', 'construct'])) {
                 continue;
             }
@@ -154,47 +227,37 @@ class ColumnFactory
                 $object->{$method}($value);
             }
         }
-
-
-        return $object;
     }
 
-    public function createActions($config)
+    /**
+     * Get real class name one of DataGrid item
+     * @param $alias
+     * @param string $group
+     * @return bool
+     */
+    public function getClassName($alias, $group = null)
     {
-        $actions = [];
-        foreach ($config as $actionConfig) {
-            $actions[] = $this->doCreate($actionConfig, 'Action');
+        $cpm = $this->getDataGridPluginManager();
+
+        if (is_array($alias)) {
+            if ($group) {
+                if (isset($alias[$group]) && is_string($alias[$group])) {
+                    $alias = $alias[$group];
+                } elseif (isset($alias[$group]['name'])) {
+                    $alias = $alias[$group]['name'];
+                } else {
+                    return false;
+                }
+            } elseif (isset($alias['name'])) {
+                $alias = $alias['name'];
+            } else {
+                return false;
+            }
         }
 
-        return $actions;
-    }
+        $alias .= ucfirst($group ?: 'column');
 
-    public function createFormatters($config)
-    {
-        $formatters = [];
-        foreach ($config as $formatterConfig) {
-            $formatters[] = $this->doCreate($formatterConfig, 'Formatter');
-        }
-
-        return $formatters;
-    }
-
-    public function createStyles($config)
-    {
-        $styles = [];
-        foreach ($config as $styleConfig) {
-            $styles[] = $this->doCreate($styleConfig, 'Style');
-        }
-
-        return $styles;
-    }
-
-    public function createType($config)
-    {
-        /** @var \ZfcDatagrid\Column\Type\Number $type */
-        $type = $this->doCreate($config, 'Type');
-
-        return $type;
+        return $cpm->getInvokableClass($alias);
     }
 
     /**

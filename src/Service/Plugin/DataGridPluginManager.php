@@ -25,7 +25,7 @@ class DataGridPluginManager extends AbstractPluginManager
      *
      * @var array
      */
-    protected $invokableClasses = [
+    /*protected $invokableClasses = [
         // column
         'selectcolumn' => Column\Select::class,
         'actioncolumn' => Column\Action::class,
@@ -60,7 +60,7 @@ class DataGridPluginManager extends AbstractPluginManager
         'htmltagformatter' => Formatter\HtmlTag::class,
         'imageformatter' => Formatter\Image::class,
         'linkformatter' => Formatter\Link::class,
-    ];
+    ];*/
 
     public function validatePlugin($plugin)
     {
@@ -79,6 +79,7 @@ class DataGridPluginManager extends AbstractPluginManager
 
     public function getInvokableClass($name)
     {
-        return $this->invokableClasses[$this->canonicalizeName($name)];
+        // @todo дістати з aliases клас перевірити чи він є в invokables
+        return isset($this->aliases[$this->canonicalizeName($name)]) ? $this->aliases[$this->canonicalizeName($name)] : false;
     }
 }
