@@ -9,8 +9,10 @@
  */
 namespace Agere\ZfcDataGridPlugin\Column\Factory;
 
+use Agere\Simpler\Plugin\SimplerPlugin;
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
+use ZfcDatagrid\Column\Select;
 use ZfcDatagrid\Column\Formatter;
 use Agere\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
 
@@ -19,11 +21,15 @@ class ColumnFactory
     /** @var array */
     protected $config = [];
 
+    /** @var SimplerPlugin */
+    protected $simpler;
+
     protected $columnPluginManager;
 
-    public function __construct(DataGridPluginManager $columnPluginManager, $config)
+    public function __construct(DataGridPluginManager $columnPluginManager, SimplerPlugin $simpler, $config)
     {
         $this->config = $config;
+        $this->simpler = $simpler;
         $this->columnPluginManager = $columnPluginManager;
     }
 
@@ -35,6 +41,11 @@ class ColumnFactory
     public function getConfig()
     {
         return $this->config;
+    }
+
+    public function getSimpler()
+    {
+        return $this->simpler;
     }
 
     public function create($config)
@@ -193,6 +204,7 @@ class ColumnFactory
 
                     //\Zend\Debug\Debug::dump([$method, $value]); //die(__METHOD__);
 
+                    // prepare special attribute like link or etc.
 
                     foreach ($value as $attribute => $val) {
                         if (is_array($val)) {
@@ -262,21 +274,44 @@ class ColumnFactory
 
     /**
      * Prepare "link" attribute value based on special array configuration
-     *
+
      * Config key:
      *      href - not changed link path
      *      placeholder_column - Column object for get placeholder value
+
      *
      * @param Formatter\Link $formatter
-     * @param $param
+     * @param $params
      * @return string
      */
-    public function prepareAttributeLink(Formatter\Link $formatter, $param)
+    public function prepareAttributeLink(Formatter\Link $formatter, $params)
     {
-        if (!is_array($param)) {
-            return $param;
+        if (!is_array($params)) {
+            return $params;
         }
 
-        return $param['href'] . '/' . $formatter->getColumnValuePlaceholder($param['placeholder_column']);
+        return $params['href'] . '/' . $formatter->getColumnValuePlaceholder($params['placeholder_column']);
+    }
+
+    public function prepareAttributeFilterSelectOptions(Select $object, $params)
+    {
+        if (!isset($params['options'])) {
+            return $params;
+        }
+
+        $options = $params['options'];
+        $om = $options['object_manager'];
+
+        $repository = $om->getRepository($options['target_class']);
+        if ($options['is_method']) {
+            $method = $options['find_method']['name'];
+            $values = call_user_func_array([$repository, $method], $options['find_method']['params']);
+        } else {
+            $values = $repository->findAll();
+        }
+        $identifier = isset($options['identifier']) ? $options['identifier'] : 'identifier';
+        $options = $this->getSimpler()->setContext($values)->asArrayValue($options['property'], $identifier);
+
+        return [$options];
     }
 }
