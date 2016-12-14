@@ -214,6 +214,36 @@ FORMATTER_JS;
 Sometimes we need use built-in database functions for aggregate result. For this purpose we need give ```\Zend\Db\Sql\Expression``` or ```\Doctrine\ORM\Query\Expr\Func``` as argument to ```Select``` column.
 > Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
 
+#### Dropdown in search panel
+`filter_select_options` config is based on [`DoctrineModule`](https://github.com/doctrine/DoctrineModule/blob/master/docs/form-element.md) for `Zend\Form` (some options need implementation).
+```
+$this->add([
+    'name' => 'Select',
+    'construct' => ['value', 'handbook'],
+    'label' => 'Order Type',
+    'width' => 2,
+    'translation_enabled' => true,
+    'user_filter_disabled' => false,
+    'filter_select_options' => [
+        'options' => [
+            'object_manager' => $this->getObjectManager(),
+            'target_class' => Handbook::class,
+            'identifier' => 'value',
+            'property' => 'value',
+            'is_method' => true,
+            'find_method' => [
+                'name' => 'findAllByTypeId',
+                'params' => [
+                    'type' => 'purposeBid',
+                    'field' => 'type'
+                ],
+            ],
+        ],
+    ],
+]);
+```
+
+#### GROUP_CONCAT
 ```
 $this->add([
 	'name' => 'Select',
