@@ -7,6 +7,8 @@ This module register new ```data_grid_plugins``` global config key and add ```Co
 
 Working principle is using ZF2 way like ```Zend\Form``` which use array configuration for create form elements.
 
+> Important! ```DataGridPluginManager``` set `$shareByDefault = false`, this allow avoid redundant classes declaration in configuration. 
+
 ## Usage
 Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid-plugin/config/application.config.php.sample``` in global ```config/application.config.php```
 
@@ -59,7 +61,7 @@ namespace Agere\Invoice\Block\Grid;
 
 use Agere\ZfcDataGrid\Block\AbstractGrid;
 
-class InvoiceGrid extends AbstractGrid
+class InquiryGrid extends AbstractGrid
 {
     public function init()
     {

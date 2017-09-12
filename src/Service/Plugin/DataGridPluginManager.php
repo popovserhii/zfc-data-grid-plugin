@@ -19,6 +19,8 @@ use ZfcDatagrid\Column\Formatter;
 
 class DataGridPluginManager extends AbstractPluginManager
 {
+    protected $shareByDefault = false;
+
     /**
      * Default set of extension classes
      * Note: Use config notation for more flexibility
