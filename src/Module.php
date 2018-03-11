@@ -1,5 +1,5 @@
 <?php
-namespace Agere\ZfcDataGridPlugin;
+namespace Popov\ZfcDataGridPlugin;
 
 class Module
 {

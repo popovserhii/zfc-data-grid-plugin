@@ -14,11 +14,11 @@ Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid-p
 
 Simplest will be create abstract class for aggregate Grid and Factory
 ```php
-namespace Agere\ZfcDataGrid\Block;
+namespace Popov\ZfcDataGrid\Block;
 
 use Zend\Stdlib\InitializableInterface;
 use ZfcDatagrid\Datagrid;
-use Agere\ZfcDataGrid\Column\Factory\ColumnFactory;
+use Popov\ZfcDataGrid\Column\Factory\ColumnFactory;
 
 abstract class AbstractGrid implements InitializableInterface
 {
@@ -57,9 +57,9 @@ abstract class AbstractGrid implements InitializableInterface
 In general is need create new Grid class which will be response for concrete Grid in your ecosystem.
 
 ```php
-namespace Agere\Invoice\Block\Grid;
+namespace Popov\Invoice\Block\Grid;
 
-use Agere\ZfcDataGrid\Block\AbstractGrid;
+use Popov\ZfcDataGrid\Block\AbstractGrid;
 
 class InquiryGrid extends AbstractGrid
 {

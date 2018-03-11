@@ -1,6 +1,6 @@
 {
   "name": "popov/zfc-data-grid-plugin",
-  "description": "ZF2 module manager which extend possibility of ZfcDatagrid",
+  "description": "ZF module manager which extend possibility of ZfcDatagrid",
   "type": "library",
   "license": "MIT",
   "keywords": [
@@ -11,9 +11,8 @@
   ],
   "authors": [
     {
-      "name": "Sergiy Popov",
-      "email": "popow.sergiy@gmail.com",
-      "homepage": "http://agere.com.ua/",
+      "name": "Serhii Popov",
+      "email": "popow.serhii@gmail.com",
       "role": "Developer"
     }
   ],
@@ -23,8 +22,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Agere\\ZfcDataGridPlugin\\": "src/",
-      "AgereTest\\ZfcDataGridPlugin\\": "test/"
+      "Popov\\ZfcDataGridPlugin\\": "src/",
+      "PopovTest\\ZfcDataGridPlugin\\": "test/"
+    }
+  },
+  "extra": {
+    "zf": {
+      "config-provider": "Popov\\ZfcDataGridPlugin\\ConfigProvider"
     }
   }
 }

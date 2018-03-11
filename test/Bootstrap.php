@@ -1,5 +1,5 @@
 <?php
-namespace AgereTest\ZfcDataGrid;
+namespace PopovTest\ZfcDataGrid;
 
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
@@ -34,7 +34,7 @@ class Bootstrap
             ],
             'modules' => [
                 'ZfcDatagrid',
-                'Agere\ZfcDataGrid',
+                'Popov\ZfcDataGrid',
             ],
         ];
 

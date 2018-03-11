@@ -1,5 +1,5 @@
 <?php
-namespace Agere\ZfcDataGridPlugin;
+namespace Popov\ZfcDataGridPlugin;
 
 use ZfcDatagrid;
 use ZfcDatagrid\Filter;
@@ -9,6 +9,16 @@ use ZfcDatagrid\Column\Action;
 use ZfcDatagrid\Column\Formatter;
 
 return [
+    // Middleware way
+    'dependencies' => [
+        'aliases' => [
+            'DataGridPluginManager' => Service\Plugin\DataGridPluginManager::class,
+        ],
+        'factories' => [
+            Service\Plugin\DataGridPluginManager::class => Service\Factory\DataGridPluginManagerFactory::class,
+        ],
+    ],
+
     'data_grid_plugins' => [
         'aliases' => [
             // column

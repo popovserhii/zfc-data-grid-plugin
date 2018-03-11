@@ -2,12 +2,12 @@
 /**
  * Flexible Column Factory
  *
- * @category Agere
- * @package Agere_ZfcDataGrid
+ * @category Popov
+ * @package Popov_ZfcDataGrid
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 19.12.15 17:44
  */
-namespace AgereTest\ZfcDataGrid\Column\Factory;
+namespace PopovTest\ZfcDataGrid\Column\Factory;
 
 use Zend\Stdlib\Exception;
 use Zend\Stdlib\ArrayUtils;
@@ -17,8 +17,8 @@ use ZfcDatagrid\Column\Action;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
 use PHPUnit_Framework_TestCase as TestCase;
-use Agere\ZfcDataGridPlugin\Column\Factory\ColumnFactory;
-use AgereTest\ZfcDataGrid\Bootstrap;
+use Popov\ZfcDataGridPlugin\Column\Factory\ColumnFactory;
+use PopovTest\ZfcDataGrid\Bootstrap;
 
 class ColumnFactoryTest extends TestCase
 {

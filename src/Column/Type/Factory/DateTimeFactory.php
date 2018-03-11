@@ -2,12 +2,12 @@
 /**
  * Column DateTime Type
  *
- * @category Agere
- * @package Agere_ZfcDataGridPlugin
+ * @category Popov
+ * @package Popov_ZfcDataGridPlugin
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 02.12.2016 11:38
  */
-namespace Agere\ZfcDataGridPlugin\Column\Type\Factory;
+namespace Popov\ZfcDataGridPlugin\Column\Type\Factory;
 
 use Interop\Container\ContainerInterface;
 use ZfcDatagrid\Column\Type\DateTime;

@@ -2,19 +2,19 @@
 /**
  * Flexible Column Factory
  *
- * @category Agere
- * @package Agere_ZfcDataGrid
+ * @category Popov
+ * @package Popov_ZfcDataGrid
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 19.12.15 17:44
  */
-namespace Agere\ZfcDataGridPlugin\Column\Factory;
+namespace Popov\ZfcDataGridPlugin\Column\Factory;
 
-use Agere\Simpler\Plugin\SimplerPlugin;
+use Popov\Simpler\Plugin\SimplerPlugin;
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use ZfcDatagrid\Column\Select;
 use ZfcDatagrid\Column\Formatter;
-use Agere\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
+use Popov\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
 
 class ColumnFactory
 {

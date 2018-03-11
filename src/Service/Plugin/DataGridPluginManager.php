@@ -2,12 +2,12 @@
 /**
  * DataGrid Plugin Manager
  *
- * @category Agere
- * @package Agere_ZfcDataGrid
+ * @category Popov
+ * @package Popov_ZfcDataGrid
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 09.03.15 21:29
  */
-namespace Agere\ZfcDataGridPlugin\Service\Plugin;
+namespace Popov\ZfcDataGridPlugin\Service\Plugin;
 
 use Zend\Stdlib\Exception;
 use Zend\ServiceManager\AbstractPluginManager;

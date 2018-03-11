@@ -2,12 +2,12 @@
 /**
  * DataGrid Plugin Provider Interface
  *
- * @category Agere
- * @package Agere_Grid
+ * @category Popov
+ * @package Popov_Grid
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 09.03.15 22:50
  */
-namespace Agere\ZfcDataGridPlugin\Service\Plugin;
+namespace Popov\ZfcDataGridPlugin\Service\Plugin;
 
 interface DataGridPluginProviderInterface
 {
