@@ -23,38 +23,61 @@ return [
         'aliases' => [
             // column
             'selectcolumn' => ZfcDatagrid\Column\Select::class,
+            'SelectColumn' => ZfcDatagrid\Column\Select::class,
             'actioncolumn' => ZfcDatagrid\Column\Action::class,
+            'ActionColumn' => ZfcDatagrid\Column\Action::class,
             'externaldatacolumn' => ZfcDatagrid\Column\ExternalData::class,
+            'ExternalDataColumn' => ZfcDatagrid\Column\ExternalData::class,
 
             // action
             'buttonaction' => Action\Button::class,
-            'checkboxaction' => Action\Checkbox::class,
+            'ButtonAction' => Action\Button::class,
+            'CheckboxAction' => Action\Checkbox::class,
             'iconaction' => Action\Icon::class,
+            'IconAction' => Action\Icon::class,
 
             // type
             'imagetype' => Type\Image::class,
+            'ImageType' => Type\Image::class,
             'numbertype' => Type\Number::class,
             'datetimetype' => Type\DateTime::class,
+            'DateTimeType' => Type\DateTime::class,
             'phparraytype' => Type\PhpArray::class,
+            'PhpArrayType' => Type\PhpArray::class,
             'phpstringtype' => Type\PhpString::class,
+            'PhpStringType' => Type\PhpString::class,
 
             // style
             'alignstyle' => Style\Align::class,
+            'AalignStyle' => Style\Align::class,
             'backgroundcolorstyle' => Style\BackgroundColor::class,
+            'BackgroundColorStyle' => Style\BackgroundColor::class,
             'boldstyle' => Style\Bold::class,
+            'BoldStyle' => Style\Bold::class,
             'colorstyle' => Style\Color::class,
+            'ColorStyle' => Style\Color::class,
             'cssclassstyle' => Style\CSSClass::class,
+            'CssClassStyle' => Style\CSSClass::class,
             'htmlstyle' => Style\Html::class,
+            'HtmlStyle' => Style\Html::class,
             'italicstyle' => Style\Italic::class,
+            'ItalicStyle' => Style\Italic::class,
             'strikethroughstyle' => Style\Strikethrough::class,
+            'StrikeThroughStyle' => Style\Strikethrough::class,
 
             // formatter
             'emailformatter' => Formatter\Email::class,
+            'EmailFormatter' => Formatter\Email::class,
             'filesizeformatter' => Formatter\FileSize::class,
+            'FileSizeFormatter' => Formatter\FileSize::class,
             'generatelinkformatter' => Formatter\GenerateLink::class,
+            'GenerateLinkFormatter' => Formatter\GenerateLink::class,
             'htmltagformatter' => Formatter\HtmlTag::class,
+            'HtmlTagFormatter' => Formatter\HtmlTag::class,
             'imageformatter' => Formatter\Image::class,
+            'ImageFormatter' => Formatter\Image::class,
             'linkformatter' => Formatter\Link::class,
+            'LinkFormatter' => Formatter\Link::class,
         ],
 
         'invokables' => [

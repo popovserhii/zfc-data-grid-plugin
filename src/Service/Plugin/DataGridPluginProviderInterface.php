@@ -4,7 +4,7 @@
  *
  * @category Popov
  * @package Popov_Grid
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 09.03.15 22:50
  */
 namespace Popov\ZfcDataGridPlugin\Service\Plugin;

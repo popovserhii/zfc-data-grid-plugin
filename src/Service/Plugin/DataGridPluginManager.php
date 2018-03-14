@@ -4,7 +4,7 @@
  *
  * @category Popov
  * @package Popov_ZfcDataGrid
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 09.03.15 21:29
  */
 namespace Popov\ZfcDataGridPlugin\Service\Plugin;
@@ -64,10 +64,10 @@ class DataGridPluginManager extends AbstractPluginManager
         'linkformatter' => Formatter\Link::class,
     ];*/
 
-    public function validatePlugin($plugin)
+    public function validate($plugin)
     {
         if ($plugin instanceof DataGridPluginInterface
-            || in_array(get_class($plugin), $this->invokableClasses)
+            || isset($this->factories[get_class($plugin)])
         ) {
             // we're okay
             return;
@@ -82,6 +82,6 @@ class DataGridPluginManager extends AbstractPluginManager
     public function getInvokableClass($name)
     {
         // @todo дістати з aliases клас перевірити чи він є в invokables
-        return isset($this->aliases[$this->canonicalizeName($name)]) ? $this->aliases[$this->canonicalizeName($name)] : false;
+        return isset($this->aliases[$name]) ? $this->aliases[$name] : false;
     }
 }

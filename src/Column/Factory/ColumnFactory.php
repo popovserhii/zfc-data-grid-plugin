@@ -4,12 +4,12 @@
  *
  * @category Popov
  * @package Popov_ZfcDataGrid
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 19.12.15 17:44
  */
 namespace Popov\ZfcDataGridPlugin\Column\Factory;
 
-use Popov\Simpler\Plugin\SimplerPlugin;
+use Popov\Simpler\SimplerHelper;
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use ZfcDatagrid\Column\Select;
@@ -21,12 +21,12 @@ class ColumnFactory
     /** @var array */
     protected $config = [];
 
-    /** @var SimplerPlugin */
+    /** @var SimplerHelper */
     protected $simpler;
 
     protected $columnPluginManager;
 
-    public function __construct(DataGridPluginManager $columnPluginManager, SimplerPlugin $simpler, $config)
+    public function __construct(DataGridPluginManager $columnPluginManager, SimplerHelper $simpler, $config)
     {
         $this->config = $config;
         $this->simpler = $simpler;
