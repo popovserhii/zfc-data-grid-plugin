@@ -217,8 +217,26 @@ Sometimes we need use built-in database functions for aggregate result. For this
 > Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
 
 #### Dropdown in search panel
-`filter_select_options` config is based on [`DoctrineModule`](https://github.com/doctrine/DoctrineModule/blob/master/docs/form-element.md) for `Zend\Form` (some options need implementation).
+**Simple**
+
+Just put array with options to `filter_select_options`. Be carefully options are doubled wrapped with array.
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['accepted', 'question'],
+    'label' => 'Accepted',
+    'width' => 1,
+    'filter_select_options' => [[
+        0 => 'No',
+        1 => 'Yes'
+    ]],
+]);
 ```
+
+**Doctrine**
+
+`filter_select_options` config is based on [`DoctrineModule`](https://github.com/doctrine/DoctrineModule/blob/master/docs/form-element.md) for `Zend\Form` (some options need implementation).
+```php
 $this->add([
     'name' => 'Select',
     'construct' => ['value', 'handbook'],
