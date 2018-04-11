@@ -126,15 +126,15 @@ return [
 
     'data_grid_plugins_config' => [
         Type\DateTime::class => [
-            'output_pattern' => 'yyyy-MM-dd',
-            'source_date_time_format' => 'Y-m-d',
+            'output_pattern' => 'yyyy-MM-dd HH:mm',
+            'source_date_time_format' => 'Y-m-d H:i',
             'source_timezone' => ini_get('date.timezone'),
         ],
         'type_of' => [ // setting for Column with relative Type
             Type\DateTime::class => [
                 'renderer_parameters' => [
                     ['formatter', 'date', 'jqGrid'], // it important for datepicker
-                    ['formatoptions', ['srcformat' => 'Y-m-d', 'newformat' => 'Y-m-d'], 'jqGrid'],
+                    ['formatoptions', ['srcformat' => 'Y-m-d H:i', 'newformat' => 'Y-m-d H:i'], 'jqGrid'],
                     //['sorttype', 'date', 'jqGrid'],
                     //['searchoptions', ['sopt' => ['eq']], 'jqGrid'],
                 ],
