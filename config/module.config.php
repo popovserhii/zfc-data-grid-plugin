@@ -135,8 +135,8 @@ return [
                 'renderer_parameters' => [
                     ['formatter', 'date', 'jqGrid'], // it important for datepicker
                     ['formatoptions', ['srcformat' => 'Y-m-d H:i', 'newformat' => 'Y-m-d H:i'], 'jqGrid'],
-                    //['sorttype', 'date', 'jqGrid'],
-                    //['searchoptions', ['sopt' => ['eq']], 'jqGrid'],
+                    ['sorttype', 'date', 'jqGrid'],
+                    ['searchoptions', ['sopt' => ['eq']], 'jqGrid'],
                 ],
             ]
         ]
