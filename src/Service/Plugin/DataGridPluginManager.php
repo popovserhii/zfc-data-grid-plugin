@@ -19,7 +19,7 @@ use ZfcDatagrid\Column\Formatter;
 
 class DataGridPluginManager extends AbstractPluginManager
 {
-    protected $shareByDefault = false;
+    protected $sharedByDefault = false;
 
     /**
      * Default set of extension classes
