@@ -263,6 +263,32 @@ $this->add([
 ]);
 ```
 
+#### DatePicker in search panel
+At this moment DatePicker require partial settings. 
+You must carefully monitor the date formats. 
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['createdAt', 'question'],
+    'label' => 'Date Create',
+    'translation_enabled' => false,
+    'width' => 1,
+    'filter_default_operation' => Filter::LIKE_RIGHT, // LIKE "2018-03-16%"
+    'type' => [
+        'name' => 'DateTime',
+        //'output_pattern' => 'yyyy-MM-dd HH:mm:ss',
+        'output_pattern' => 'yyyy-MM-dd',
+        'source_dateTime_format' => 'Y-m-d' // this date format will be used in WHERE statment
+    ],
+    'renderer_parameters' => [
+        #['editable', true, 'jqGrid'],
+        ['formatter', 'date', 'jqGrid'], // it is important for datepicker
+        ['formatoptions', ['srcformat' => 'Y-m-d', 'newformat' => 'Y-m-d'], 'jqGrid'],
+        ['searchoptions', ['sopt' => ['eq']], 'jqGrid'],
+    ],
+]);
+```
+
 #### GROUP_CONCAT
 ```
 $this->add([
