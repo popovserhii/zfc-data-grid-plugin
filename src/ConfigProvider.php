@@ -19,10 +19,6 @@ class ConfigProvider
 {
     public function __invoke()
     {
-        $config = require __DIR__ . '/../config/module.config.php';
-        //unset($config['controller_plugins']);
-        //unset($config['view_helpers']);
-
-        return $config;
+        return require __DIR__ . '/../config/module.config.php';
     }
 }

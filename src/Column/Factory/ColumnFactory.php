@@ -77,12 +77,12 @@ class ColumnFactory
             throw new Exception\RuntimeException($group . ' "name" key must be set and cannot be empty');
         }
 
-        $cpm = $this->getDataGridPluginManager();
+        $gpm = $this->getDataGridPluginManager();
 
         //$className = is_array($config['name']) ? $config['name']['name'] : $config['name'];
         //$className = (isset($config['name']) ? $config['name'] : $config) . $group;
         $className = $config['name'] . $group;
-        if (!$cpm->has($className)) {
+        if (!$gpm->has($className)) {
             throw new Exception\RuntimeException(sprintf(
                 '%s "%s" not fount in the "data_grid_plugins" key of configuration array', $group, $config['name']
             ));
@@ -90,7 +90,7 @@ class ColumnFactory
 
         /** @var \ZfcDatagrid\Column\Action $object */
         if (isset($config['construct'])) {
-            $className = $cpm->getInvokableClass($className);
+            $className = $gpm->getInvokableClass($className);
             //$object = new $className(...$config['construct']);
 
             // @link http://stackoverflow.com/a/2409288/1335142
@@ -101,7 +101,7 @@ class ColumnFactory
             $object = $reflect->newInstanceArgs($config['construct']);
             //}
         } else {
-            $object = $cpm->get($className);
+            $object = $gpm->get($className);
         }
 
         $this->configSetter($object, $config);
