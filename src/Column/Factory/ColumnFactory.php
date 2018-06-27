@@ -9,22 +9,41 @@
  */
 namespace Popov\ZfcDataGridPlugin\Column\Factory;
 
-use Popov\Simpler\SimplerHelper;
+use Closure;
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
+use ZfcDatagrid\Column\AbstractColumn;
 use ZfcDatagrid\Column\Select;
 use ZfcDatagrid\Column\Formatter;
+use Popov\Simpler\SimplerHelper;
 use Popov\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
 
 class ColumnFactory
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $config = [];
 
-    /** @var SimplerHelper */
+    /**
+     * @var SimplerHelper
+     */
     protected $simpler;
 
+    /**
+     * @var DataGridPluginManager
+     */
     protected $columnPluginManager;
+
+    /**
+     * @var AbstractColumn[]
+     */
+    protected $columns;
+
+    /**
+     * @var Closure[]
+     */
+    protected $deferredPreparation = [];
 
     public function __construct(DataGridPluginManager $columnPluginManager, SimplerHelper $simpler, $config)
     {
@@ -51,8 +70,25 @@ class ColumnFactory
     public function create($config)
     {
         $column = $this->doCreate($config, 'Column');
+        $this->columns[$column->getUniqueId()] = $column;
+
+        $this->runDeferredPreparation($column);
 
         return $column;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return AbstractColumn|bool
+     */
+    public function getColumn($id)
+    {
+        if (isset($this->columns[$id])) {
+            return $this->columns[$id];
+        }
+
+        return false;
     }
 
     /**
@@ -64,6 +100,29 @@ class ColumnFactory
     public function getConfigKey($key)
     {
         return strtolower(preg_replace("/[^A-Za-z0-9]/", '', $key));
+    }
+
+    /**
+     * We can have specific requirement such as placeholder_column generation when real column wasn't registered yet.
+     * In those cases we can register closure with specific condition and execute it when condition is true.
+     *
+     * For performance boost, you can return true from a closure if preparation must be executed only once.
+     * In such case this preparation consider as executed and will remove from stack.
+     *
+     * @param AbstractColumn $column
+     */
+    protected function runDeferredPreparation($column)
+    {
+        foreach ($this->deferredPreparation as $key => $preparation) {
+            if ($preparation($column)) {
+                unset($this->deferredPreparation[$key]);
+            }
+        }
+    }
+
+    public function addDeferredPreparation($closure)
+    {
+        $this->deferredPreparation[] = $closure;
     }
 
     protected function doCreate($config, $group)
@@ -141,7 +200,6 @@ class ColumnFactory
 
     public function createType($config)
     {
-        /** @var \ZfcDatagrid\Column\Type\Number $type */
         $type = $this->doCreate($config, 'Type');
 
         return $type;
@@ -180,7 +238,6 @@ class ColumnFactory
             // create sub objects: action, formatter etc.
             if (method_exists($this, $method = 'create' . $suffix)) {
                 $options = $this->{$method}($value);
-                //\Zend\Debug\Debug::dump([$suffix, $options, __METHOD__.__LINE__]);
                 $object->{'set' . $suffix}($options);
 
                 continue;
@@ -202,10 +259,7 @@ class ColumnFactory
                         }
                     }
 
-                    //\Zend\Debug\Debug::dump([$method, $value]); //die(__METHOD__);
-
                     // prepare special attribute like link or etc.
-
                     foreach ($value as $attribute => $val) {
                         if (is_array($val)) {
                             call_user_func_array([$object, $method], $val);
@@ -213,28 +267,18 @@ class ColumnFactory
                             $object->{$method}($attribute, $val);
                         }
                     }
-
-
                 } else {
                     // prepare special attribute like link or etc.
                     if (method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix)) {
                         $value = $this->{$prepareMethod}($object, $value);
                     }
 
-                    //if (version_compare(phpversion(), '5.6.0', '>=')) {
-                    //	$object->{$method}(eval('...') . $value);
-                    //} else {
-                    //call_user_func_array([$object, $method], $value);
-                    //}
-
-                    //\Zend\Debug\Debug::dump([$method, $value]); //die(__METHOD__);
                     if (is_array($value)) {
                         call_user_func_array([$object, $method], $value);
                     } else {
                         $object->{$method}($value);
                     }
                 }
-                //\Zend\Debug\Debug::dump($method); die(__METHOD__);
             } else {
                 $object->{$method}($value);
             }
@@ -273,12 +317,11 @@ class ColumnFactory
     }
 
     /**
-     * Prepare "link" attribute value based on special array configuration
-
+     * Prepare "link" attribute value based on special array configuration.
+     *
      * Config key:
      *      href - not changed link path
-     *      placeholder_column - Column object for get placeholder value
-
+     *      placeholder_column - Column object or column id for get placeholder value
      *
      * @param Formatter\Link $formatter
      * @param $params
@@ -290,7 +333,34 @@ class ColumnFactory
             return $params;
         }
 
-        return $params['href'] . '/' . $formatter->getColumnValuePlaceholder($params['placeholder_column']);
+        $marks = [];
+        $placeholders = (array) $params['placeholder_column'];
+        foreach ($placeholders as $placeholder) {
+            if (is_string($placeholder) && ($column = $this->getColumn($placeholder))) {
+                //$href = $params['href'] . '/' . $formatter->getColumnValuePlaceholder($column);
+                $marks[] = $formatter->getColumnValuePlaceholder($column);
+            } elseif (($placeholder instanceof AbstractColumn)) {
+                $marks[] = $formatter->getColumnValuePlaceholder($placeholder);
+            } else {
+                $marks[] = ':' . $placeholder . ':';
+
+                // When "placeholder_column" is string, such as "item_code",
+                // we don't know if column was already added or will be added during next calls.
+                // That's why we postpone column register in getColumnValuePlaceholder
+                // and add this task as a closure for next check.
+                $this->addDeferredPreparation(function(AbstractColumn $column) use ($formatter, $placeholders) {
+                    foreach ($placeholders as $placeholder) {
+                        ($column->getUniqueId() === $placeholder)
+                            ? $formatter->getColumnValuePlaceholder($column)
+                            : false;
+                    }
+                });
+            }
+        }
+
+        $href = sprintf($params['href'], ...$marks);
+
+        return $href;
     }
 
     public function prepareAttributeFilterSelectOptions(Select $object, $params)

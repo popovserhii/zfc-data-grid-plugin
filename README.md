@@ -1,18 +1,25 @@
 # ZF2 DataGrid Plugin Module
 
+Welcome to the official ZfcDataGrid documentation. 
+This documentation will help you to quickly understand how to use ZfcDataGrid.
+
+If you are looking for some information that is not listed in the documentation, please open an issue!
+
 ZF2 DataGrid Plugin Module based on [ZfcDatagrid](https://github.com/ThaDafinser/ZfcDatagrid) and is a kind of superstructure. 
 Its main goal to reduce using complexity and improve code readability.
 
-This module register new ```data_grid_plugins``` global config key and add ```ColumnFactory```.
+This module register new `data_grid_plugins` global config key and add `ColumnFactory`.
 
 Working principle is using ZF2 way like ```Zend\Form``` which use array configuration for create form elements.
 
-> Important! ```DataGridPluginManager``` set `$shareByDefault = false`, this allow avoid redundant classes declaration in configuration. 
+> Important! `DataGridPluginManager` set `$shareByDefault = false`, this allow avoid redundant classes declaration in configuration. 
+
 
 ## Usage
 Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid-plugin/config/application.config.php.sample``` in global ```config/application.config.php```
 
-Simplest will be create abstract class for aggregate Grid and Factory
+Simplest will be create abstract class for aggregate Grid and Factory.
+This Factory was created and you can use it in your project. See `Popov\ZfcDataGrid\Block\AbstractGrid`
 ```php
 namespace Popov\ZfcDataGrid\Block;
 
@@ -163,7 +170,9 @@ class InquiryGrid extends AbstractGrid
                 [
                     'name' => 'Link',
                     'attributes' => ['class' => 'pencil-edit-icon'],
-                    'link' => ['href' => '/invoice/view', 'placeholder_column' => $colId] // special config
+                    // next two line are identical
+                    //'link' => ['href' => '/invoice/view', 'placeholder_column' => 'invoice_id'],
+                    'link' => ['href' => '/invoice/view', 'placeholder_column' => $colId], // special config
                 ],
             ],
         ]);
@@ -216,7 +225,94 @@ FORMATTER_JS;
 Sometimes we need use built-in database functions for aggregate result. For this purpose we need give ```\Zend\Db\Sql\Expression``` or ```\Doctrine\ORM\Query\Expr\Func``` as argument to ```Select``` column.
 > Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
 
-#### Dropdown in search panel
+
+## Columns
+### Columns Introduction
+The column definition is a central part of ZfcDataGrid, they are used to tell the grid what columns to display and how to display them.
+
+A minimal column definition looks like this:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'marketplace'],
+    'label' => 'Marketplace',
+]);
+```
+
+### Select
+
+#### GROUP_CONCAT
+```php
+$this->add([
+	'name' => 'Select',
+	//'construct' => [new Doctrine\ORM\Query\Expr\\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // Doctrine usage
+	//'construct' => [new Doctrine\ORM\Query\Expr\Func('GROUP_CONCAT', ['serial.number']), 'serial_all'], // Doctrine usage
+	'construct' => [new Zend\Db\Sql\Expression ('GROUP_CONCAT(serial.number)'), 'serial_all'], // ZendTable usage
+	'label' => 'Serial number',
+]);
+```
+
+```php
+$this->add([
+	'name' => 'Select',
+	// doctrine doesn't support this expression
+	//'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE 0 END']), 'serial_id'],
+	
+	// zend table usage
+	'construct' => [new Sql\Expression('GROUP_CONCAT(CASE WHEN serial.cartItemId > 0 THEN serial.number END)'), 'serial_id'],
+	'label' => 'Serial number',
+]);
+```
+
+### Column Data Formatters
+#### Link
+The Link formatters displays a column content as an HTML link with value and href is the column content, to use it do the following:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['asin', 'product'],
+    'label' => 'Asin',
+    'formatters' => [[
+        'name' => 'Link',
+        'link' => ['href' => '//www.amazon.de/dp/%s', 'placeholder_column' => 'product_asin']
+    ]],
+]);
+```
+
+You also can pass Column object as 'placeholder_column'
+```php
+$colId = $this->add([
+    'name' => 'Select',
+    'construct' => ['id', 'product'],
+    'identity' => true,
+])->getDataGrid()->getColumnByUniqueId('product_id');
+        
+$this->add([
+    'name' => 'Select',
+    'construct' => ['asin', 'product'],
+    'label' => 'Asin',
+    'formatters' => [[
+        'name' => 'Link',
+        'link' => ['href' => '//www.amazon.de/dp/%s', 'placeholder_column' => $colId]
+    ]],
+]);
+```
+
+The link formatter also support multiple placeholders for build url
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['asin', 'product'],
+    'label' => 'Asin',
+    'formatters' => [[
+        'name' => 'Link',
+        'link' => ['href' => '//%s/dp/%s', 'placeholder_column' => ['marketplace_host', 'product_asin']]
+    ]],
+]);
+```
+
+
+### DropDown in search panel
 **Simple**
 
 Just put array with options to `filter_select_options`. Be carefully options are doubled wrapped with array.
@@ -241,9 +337,6 @@ $this->add([
     'name' => 'Select',
     'construct' => ['value', 'handbook'],
     'label' => 'Order Type',
-    'width' => 2,
-    'translation_enabled' => true,
-    'user_filter_disabled' => false,
     'filter_select_options' => [
         'options' => [
             'object_manager' => $this->getObjectManager(),
@@ -263,7 +356,7 @@ $this->add([
 ]);
 ```
 
-#### DatePicker in search panel
+### DatePicker in search panel
 At this moment DatePicker require partial settings. 
 You must carefully monitor the date formats. 
 ```php
@@ -286,30 +379,5 @@ $this->add([
         ['formatoptions', ['srcformat' => 'Y-m-d', 'newformat' => 'Y-m-d'], 'jqGrid'],
         ['searchoptions', ['sopt' => ['eq']], 'jqGrid'],
     ],
-]);
-```
-
-#### GROUP_CONCAT
-```
-$this->add([
-	'name' => 'Select',
-	//'construct' => [new Expr\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // doctrine usage
-	//'construct' => [new Expr\Func('GROUP_CONCAT', ['serial.number']), 'serial_all'], // doctrine usage
-	'construct' => [new Sql\Expression('GROUP_CONCAT(serial.number)'), 'serial_all'], // zend table usage
-	'label' => 'Serial number',
-	'width' => 1,
-]);
-```
-
-```
-$this->add([
-	'name' => 'Select',
-	// doctrine doesn't support this expression
-	//'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE 0 END']), 'serial_id'],
-	
-	// zend table usage
-	'construct' => [new Sql\Expression('GROUP_CONCAT(CASE WHEN serial.cartItemId > 0 THEN serial.number END)'), 'serial_id'],
-	'label' => 'Serial number',
-	'width' => 1,
 ]);
 ```
