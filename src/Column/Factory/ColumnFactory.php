@@ -318,7 +318,6 @@ class ColumnFactory
 
     /**
      * Prepare "link" attribute value based on special array configuration.
-     *
      * Config key:
      *      href - not changed link path
      *      placeholder_column - Column object or column id for get placeholder value

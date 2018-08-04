@@ -78,6 +78,10 @@ return [
             'ImageFormatter' => Formatter\Image::class,
             'linkformatter' => Formatter\Link::class,
             'LinkFormatter' => Formatter\Link::class,
+            'InlineFormatter' => Column\Formatter\Inline::class,
+            'inlineformatter' => Column\Formatter\Inline::class,
+            'ExternalLinkFormatter' => Column\Formatter\ExternalLink::class,
+            'externallinkformatter' => Column\Formatter\ExternalLink::class,
         ],
 
         'invokables' => [
@@ -115,6 +119,8 @@ return [
             Formatter\HtmlTag::class => Formatter\HtmlTag::class,
             Formatter\FileSize::class => Formatter\FileSize::class,
             Formatter\GenerateLink::class => Formatter\GenerateLink::class,
+            Column\Formatter\Inline::class => Column\Formatter\Inline::class,
+            Column\Formatter\ExternalLink::class => Column\Formatter\ExternalLink::class,
         ],
 
         //'factories' => [

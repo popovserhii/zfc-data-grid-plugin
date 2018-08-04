@@ -311,6 +311,40 @@ $this->add([
 ]);
 ```
 
+#### Inline
+Inline Formatter allow to show text in one line. This will be replace all `<br>`, `\n` and some other filtration for full
+compatibility with jqGrid.
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['description', 'product'],
+    'label' => 'Description',
+    'formatters' => [[
+        'name' => 'Inline',
+    ]],
+]);
+```
+
+#### ExternalLink
+ExternalLink Formatter allow use full URL without inner `rawurlencode` preparation.
+> Preference is given to `Link Formatter`. Use in extreme cases.
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['url', 'customer'],
+    'label' => 'Customer Url',
+    'hidden' => true
+]);
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'customer'],
+    'label' => 'Customer Name',
+    'formatters' => [[
+        'name' => 'ExternalLink',
+        'link' => ['href' => '%s', 'placeholder_column' => 'customer_url']
+    ]],
+]);
+```
 
 ### DropDown in search panel
 **Simple**
