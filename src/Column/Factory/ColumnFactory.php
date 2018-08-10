@@ -333,10 +333,12 @@ class ColumnFactory
         }
 
         $marks = [];
-        $placeholders = (array) $params['placeholder_column'];
+        $placeholders = is_object($params['placeholder_column'])
+            ? [$params['placeholder_column']]
+            : (array) $params['placeholder_column'];
+
         foreach ($placeholders as $placeholder) {
             if (is_string($placeholder) && ($column = $this->getColumn($placeholder))) {
-                //$href = $params['href'] . '/' . $formatter->getColumnValuePlaceholder($column);
                 $marks[] = $formatter->getColumnValuePlaceholder($column);
             } elseif (($placeholder instanceof AbstractColumn)) {
                 $marks[] = $formatter->getColumnValuePlaceholder($placeholder);
