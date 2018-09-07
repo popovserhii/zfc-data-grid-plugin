@@ -423,7 +423,7 @@ $this->add([
 
 You can add multiple conditions for the style using `ByValue`, and you can set the operator between the multiple conditions to be 'OR' or 'AND' like the following:
 
-- Apply only when the value of the column $col between 20 and 40 (inclusive)
+- Apply only when the value of the column ':product_price:' between 20 and 40 (inclusive)
 ```php
 $this->add([
     'name' => 'Select',
