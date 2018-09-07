@@ -364,8 +364,7 @@ $this->add([
     'construct' => ['name', 'product'],
     'label' => 'Name',
     'styles' => [[
-        'name' => 'Italic',
-        'consturct' => [200, 200, 200]
+        'name' => 'Italic'
     ]],
 ]);
 ```
