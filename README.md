@@ -436,7 +436,7 @@ $this->add([
             'byValueOperator' => 'AND',
             'byValue' => [
                 [':product_price:', 20, \ZfcDatagrid\Filter::GREATER_EQUAL],
-                [':product_price:', 50, \ZfcDatagrid\Filter::LESS_EQUAL]
+                [':product_price:', 40, \ZfcDatagrid\Filter::LESS_EQUAL]
             ]
         ],
     ],
