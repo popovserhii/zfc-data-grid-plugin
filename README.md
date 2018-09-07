@@ -264,6 +264,204 @@ $this->add([
 ]);
 ```
 
+### Column Data Styles
+#### Align
+The `Align` is used to change text direction of rows or columns of the grid, to create the `Align` do the following:
+
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['price', 'product'],
+    'label' => 'Asin',
+    'styles' => [[
+        'name' => 'Align',
+        'construct' => ['right'],
+    ]],
+]);
+```
+or
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['price', 'product'],
+    'label' => 'Asin',
+    'styles' => [[
+        'name' => 'Align',
+        'construct' => [\ZfcDatagrid\Column\Style\Align::$RIGHT],
+    ]],
+]);
+```
+
+If you set column type as `Number` the text direction automatically will be changed to right
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['price', 'product'],
+    'label' => 'Asin',
+    'type' => [
+        'name' => 'Number'
+    ],
+]);
+```
+
+#### BackgroundColor
+The `BackgroundColor` is used to change background color of rows or columns of the grid, to create a `BackgroundColor` do the following:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['temperature', 'planet'],
+    'label' => 'Temperature',
+    'styles' => [[
+        'name' => 'BackgroundColor',
+        'constuct' => [200, 200, 200]
+    ]],
+]);
+```
+where the parameters are the color red green blue values.
+
+To see how to apply style on rows or columns see the [Applying Style](#Applying Style) section.
+
+
+#### Bold
+The `Bold` style simply make the text bold,  you can create a bold style like this:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'product'],
+    'label' => 'Name',
+    'styles' => [[
+        'name' => 'Bold'
+    ]],
+]);
+```
+
+To see how to apply style on rows or columns see the [Applying Style](#Applying Style) section.
+
+
+#### Color
+The `Color` is used to change the color of rows or columns of the grid, to create a `Color` do the following::
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'product'],
+    'label' => 'Name',
+    'styles' => [[
+        'name' => 'Bold',
+        'consturct' => [200, 200, 200]
+    ]],
+]);
+```
+where the parameters are the color red green blue values.
+
+To see how to apply style on rows or columns see the [Applying Style](#Applying Style) section.
+
+
+#### Italic
+The `Italic` style simply make the text italic, you can create an Italic style like this:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'product'],
+    'label' => 'Name',
+    'styles' => [[
+        'name' => 'Italic',
+        'consturct' => [200, 200, 200]
+    ]],
+]);
+```
+where the parameters are the color red green blue values.
+
+To see how to apply style on rows or columns see the [Applying Style](#Applying Style) section.
+
+#### Strikethrough
+The `Strikethrough` style simply make the text strikethrough, you can create a bold style like this:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'product'],
+    'label' => 'Name',
+    'styles' => [[
+        'name' => 'Strikethrough'
+    ]],
+]);
+```
+
+To see how to apply style on rows or columns see the [Applying Style](#Applying Style) section.
+
+
+#### CSSClass
+The `CSSClass` is used to set additional classes attribute of rows or cells of the grid, to create a `CSSClass` do the following::
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['name', 'product'],
+    'label' => 'Name',
+    'styles' => [[
+        'name' => 'CSSClass',
+        'class' => ['text-upper', 'product-name']
+    ]],
+]);
+```
+
+
+#### Applying Style
+
+- Apply only when the value of the column :product_price: = 50
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['price', 'product'],
+    'label' => 'Price',
+    'styles' => [
+        [
+            'name' => 'Color',
+            'construct' => [\ZfcDatagrid\Column\Style\Color::$RED],
+            'byValue' => [[':product_price:', 50, \ZfcDatagrid\Filter::EQUAL]]
+        ],
+    ],
+]);
+```
+
+You can add multiple conditions for the style using `ByValue`, and you can set the operator between the multiple conditions to be 'OR' or 'AND' like the following:
+
+- Apply only when the value of the column $col between 20 and 40 (inclusive)
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['price', 'product'],
+    'label' => 'Price',
+    'styles' => [
+        [
+            'name' => 'Color',
+            'construct' => [\ZfcDatagrid\Column\Style\Color::$RED],
+            'byValueOperator' => 'AND',
+            'byValue' => [
+                [':product_price:', 20, \ZfcDatagrid\Filter::GREATER_EQUAL],
+                [':product_price:', 50, \ZfcDatagrid\Filter::LESS_EQUAL]
+            ]
+        ],
+    ],
+]);
+```
+
+- Apply only when the value of the column ':order_quantity:' is greater or equal than the value of the column ':product_stock:'
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['quantity', 'order'],
+    'label' => 'Price',
+    'styles' => [
+        [
+            'name' => 'Color',
+            'construct' => [\ZfcDatagrid\Column\Style\Color::$GREEN],
+            'byValue' => [[':order_quantity:', ':product_stock:', \ZfcDatagrid\Filter::LESS_EQUAL]]
+        ],
+    ],
+]);
+```
+> Notice. This functionality is not full tested!
+
+
 ### Column Data Formatters
 #### Link
 The Link formatters displays a column content as an HTML link with value and href is the column content, to use it do the following:

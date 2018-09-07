@@ -40,6 +40,7 @@ return [
             'imagetype' => Type\Image::class,
             'ImageType' => Type\Image::class,
             'numbertype' => Type\Number::class,
+            'NumberType' => Type\Number::class,
             'datetimetype' => Type\DateTime::class,
             'DateTimeType' => Type\DateTime::class,
             'phparraytype' => Type\PhpArray::class,
@@ -49,7 +50,7 @@ return [
 
             // style
             'alignstyle' => Style\Align::class,
-            'AalignStyle' => Style\Align::class,
+            'AlignStyle' => Style\Align::class,
             'backgroundcolorstyle' => Style\BackgroundColor::class,
             'BackgroundColorStyle' => Style\BackgroundColor::class,
             'boldstyle' => Style\Bold::class,

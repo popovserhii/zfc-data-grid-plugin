@@ -14,6 +14,7 @@ use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use ZfcDatagrid\Column\AbstractColumn;
 use ZfcDatagrid\Column\Select;
+use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Formatter;
 use Popov\Simpler\SimplerHelper;
 use Popov\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
@@ -84,6 +85,7 @@ class ColumnFactory
      */
     public function getColumn($id)
     {
+        $id = trim($id, ':');
         if (isset($this->columns[$id])) {
             return $this->columns[$id];
         }
@@ -245,9 +247,12 @@ class ColumnFactory
 
             $method = 'set' . $suffix;
             if (is_array($value)) {
-                if (!method_exists($object, $method)) {
+                if (!method_exists($object, 'set' . $suffix) && !method_exists($object, 'add' . $suffix)) {
                     // setter for array options like attributes which need be set peer iteration
-                    $suffix = substr($suffix, 0, strlen($suffix) - 1); // to singular (remove "s")
+                    $suffix = ($suffix[($suffixLen = strlen($suffix)) - 1] === 's')
+                        ? substr($suffix, 0, $suffixLen - 1)  // to singular (remove "s")
+                        : substr($suffix, 0, $suffixLen);
+
                     if (!method_exists($object, $setMethod = $method = 'set' . $suffix)) {
                         if (!method_exists($object, $addMethod = $method = 'add' . $suffix)) {
                             throw new Exception\BadMethodCallException(sprintf(
@@ -259,17 +264,18 @@ class ColumnFactory
                         }
                     }
 
-                    // prepare special attribute like link or etc.
                     foreach ($value as $attribute => $val) {
-                        if (is_array($val)) {
+                        /*if (is_array($val)) {
                             call_user_func_array([$object, $method], $val);
                         } else {
                             $object->{$method}($attribute, $val);
-                        }
+                        }*/
+                        $value = is_array($val) ? $val : [$attribute, $val];
+                        $this->configPrepareAttribute($suffix, $object, $method, $value);
                     }
                 } else {
                     // prepare special attribute like link or etc.
-                    if (method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix)) {
+                    /*if (method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix)) {
                         $value = $this->{$prepareMethod}($object, $value);
                     }
 
@@ -277,7 +283,8 @@ class ColumnFactory
                         call_user_func_array([$object, $method], $value);
                     } else {
                         $object->{$method}($value);
-                    }
+                    }*/
+                    $this->configPrepareAttribute($suffix, $object, $method, $value);
                 }
             } else {
                 $object->{$method}($value);
@@ -314,6 +321,23 @@ class ColumnFactory
         $alias .= ucfirst($group ?: 'column');
 
         return $cpm->getInvokableClass($alias);
+    }
+
+    public function configPrepareAttribute($suffix, $object, $method, $value)
+    {
+        // prepare special attribute like link or etc.
+        if (method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix)) {
+            if (false === ($value = $this->{$prepareMethod}($object, $value))) {
+                // Defer value preparation
+                return;
+            }
+        }
+
+        if (is_array($value)) {
+            call_user_func_array([$object, $method], $value);
+        } else {
+            $object->{$method}($value);
+        }
     }
 
     /**
@@ -364,6 +388,51 @@ class ColumnFactory
         return $href;
     }
 
+    public function prepareAttributeByValue(Style\Color $style, $params)
+    {
+        $groups = is_array($params[0]) ? $params : [$params];
+
+        $placeholders = [];
+        foreach ($groups as $params) {
+            foreach ($params as $i => $param) {
+                if ($this->isPlaceholder($param) && ($column = $this->getColumn($param))) {
+                    $params[$i] = $column;
+                } elseif (($param instanceof AbstractColumn)) {
+                    $params[$i] = $param;
+                } elseif ($this->isPlaceholder($param)) {
+                    //$placeholders[$key] = $param;
+                    $placeholders[$i] = $param;
+                }
+            }
+
+            $this->addDeferredPreparation(function (AbstractColumn $column) use ($style, $params, $placeholders) {
+                static $counter = 0;
+                static $freeze = [];
+
+                if (!$freeze) {
+                    $freeze = $params;
+                }
+
+                foreach ($placeholders as $i => $placeholder) {
+                    if ($column->getUniqueId() === ($uniqueId = trim($placeholder, ':'))) {
+                        $freeze[$i] = $column;
+                        $counter++;
+                    }
+                }
+
+                if (count($placeholders) === $counter) {
+                    //$style->addByValue($col, 20, Filter::GREATER_EQUAL);
+                    $style->addByValue(...$freeze);
+
+                    // All placeholders has been handled, can remove preparation
+                    return true;
+                }
+            });
+        }
+
+        return false;
+    }
+
     public function prepareAttributeFilterSelectOptions(Select $object, $params)
     {
         if (!isset($params['options'])) {
@@ -384,5 +453,10 @@ class ColumnFactory
         $options = $this->getSimpler()->setContext($values)->asArrayValue($options['property'], $identifier);
 
         return [$options];
+    }
+
+    public function isPlaceholder($value)
+    {
+        return is_string($value) && $value[0] === ':' && $value[strlen($value) - 1] === ':';
     }
 }
