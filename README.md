@@ -612,3 +612,38 @@ $this->add([
     ],
 ]);
 ```
+
+
+### Grid Data Sorting
+
+Default grid data sort can be set with `sortDefault` option. 
+`ASC` sort order will be applied to column `position` only if any other user filters did not apply before.
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['position', 'product'],
+    'label' => 'Position',
+    'sortDefault' => [1, 'ASC']
+]);
+```
+
+Also several default sort orders can be set, simply apply `sortDefault` to relative columns
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['inStock', 'product'],
+    'label' => 'Position',
+    'sortDefault' => [1, 'DESC']
+]);
+```
+
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['position', 'product'],
+    'label' => 'Position',
+    'sortDefault' => [2, 'ASC']
+]);
+
+
+```
