@@ -264,6 +264,39 @@ $this->add([
 ]);
 ```
 
+
+### Column Data Types
+#### Number
+The `Number` (original: [`Type\Number`](https://github.com/zfc-datagrid/zfc-datagrid/blob/master/docs/03.%20Columns.md#number)) 
+column data types is used to format numbers using the PHP [*NumberFormatter*](http://php.net/manual/en/class.numberformatter.php), 
+and so you can use the *NumberFormatter* properties in this data type, to do so you create a `Number` object 
+which can takes the following parameters in order:
+
+* Format Style: default `NumberFormatter::DECIMAL`
+* Format Type: default `NumberFormatter::TYPE_DEFAULT`
+* Locale: Default `Locale::getDefault()`
+
+You can also do the following for this type:
+
+* `'type' => ['prefix' => 'prefix']`
+* `'type' => ['suffix' => 'suffix']`
+* `'type' => ['attribute' => ['attrName', 'attrValue']]`
+
+A usage Example of this column data type is the following:
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['weight', 'product'],
+    'label' => 'Weight',
+    'type' => [
+        'name' => 'Number',
+        'attribute' => [\NumberFormatter::FRACTION_DIGITS, 2],
+        'suffix' => ' kg'
+    ],
+]);
+```
+
+
 ### Column Data Styles
 #### Align
 The `Align` is used to change text direction of rows or columns of the grid, to create the `Align` do the following:
