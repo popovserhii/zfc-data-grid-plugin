@@ -5,7 +5,7 @@ This documentation will help you to quickly understand how to use ZfcDataGrid.
 
 If you are looking for some information that is not listed in the documentation, please open an issue!
 
-ZF2 DataGrid Plugin Module based on [ZfcDatagrid](https://github.com/ThaDafinser/ZfcDatagrid) and is a kind of superstructure. 
+ZF DataGrid Plugin Module based on [ZfcDatagrid](https://github.com/ThaDafinser/ZfcDatagrid) and is a kind of superstructure. 
 Its main goal to reduce using complexity and improve code readability.
 
 This module register new `data_grid_plugins` global config key and add `ColumnFactory`.
@@ -16,7 +16,7 @@ Working principle is using ZF2 way like ```Zend\Form``` which use array configur
 
 
 ## Usage
-Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid-plugin/config/application.config.php.sample``` in global ```config/application.config.php```
+Register Plugin. For this move content of ```vendor/popovserhii/zfc-data-grid-plugin/config/application.config.php.sample``` in global ```config/application.config.php```
 
 In general you create *new Grid class* which will be response for concrete Grid in your ecosystem.
 
@@ -128,8 +128,8 @@ class InquiryGrid extends AbstractGrid
                     'name' => 'Link',
                     'attributes' => ['class' => 'pencil-edit-icon'],
                     // next two line are identical
-                    //'link' => ['href' => '/invoice/view', 'placeholder_column' => 'invoice_id'],
-                    'link' => ['href' => '/invoice/view', 'placeholder_column' => $colId], // special config
+                    //'link' => ['href' => '/invoice/view/%s', 'placeholder_column' => 'invoice_id'],
+                    'link' => ['href' => '/invoice/view/%s', 'placeholder_column' => $colId], // special config
                 ],
             ],
         ]);
