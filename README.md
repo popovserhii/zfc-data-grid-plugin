@@ -18,50 +18,7 @@ Working principle is using ZF2 way like ```Zend\Form``` which use array configur
 ## Usage
 Register Plugin. For this move content of ```vendor/agerecompany/zfc-data-grid-plugin/config/application.config.php.sample``` in global ```config/application.config.php```
 
-Simplest will be create abstract class for aggregate Grid and Factory.
-This Factory was created and you can use it in your project. See `Popov\ZfcDataGrid\Block\AbstractGrid`
-```php
-namespace Popov\ZfcDataGrid\Block;
-
-use Zend\Stdlib\InitializableInterface;
-use ZfcDatagrid\Datagrid;
-use Popov\ZfcDataGrid\Column\Factory\ColumnFactory;
-
-abstract class AbstractGrid implements InitializableInterface
-{
-    /** @var Datagrid */
-    protected $dataGrid;
-
-    /** @var ColumnFactory */
-    protected $columnFactory;
-
-    public function __construct(Datagrid $dataGrid, ColumnFactory $columnFactory)
-    {
-        $this->dataGrid = $dataGrid;
-        $this->columnFactory = $columnFactory;
-    }
-    
-    public function getDataGrid()
-    {
-        return $this->dataGrid;
-    }
-    
-    public function getColumnFactory()
-    {
-        return $this->columnFactory;
-    }
-
-    public function add(array $columnConfig)
-    {
-        $column = $this->getColumnFactory()->create($columnConfig);
-        $this->getDataGrid()->addColumn($column);
-
-        return $this;
-    }
-}
-```
-
-In general is need create new Grid class which will be response for concrete Grid in your ecosystem.
+In general you create *new Grid class* which will be response for concrete Grid in your ecosystem.
 
 ```php
 namespace Popov\Invoice\Block\Grid;
@@ -221,48 +178,58 @@ FORMATTER_JS;
 }
 ```
 
-### Advanced usage
-Sometimes we need use built-in database functions for aggregate result. For this purpose we need give ```\Zend\Db\Sql\Expression``` or ```\Doctrine\ORM\Query\Expr\Func``` as argument to ```Select``` column.
-> Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
-
 
 ## Columns
 ### Columns Introduction
-The column definition is a central part of ZfcDataGrid, they are used to tell the grid what columns to display and how to display them.
+The column definition is a central part of `ZfcDataGrid`, they are used to tell the grid what columns to display and how to display them.
 
+### Column Types
+#### Select
 A minimal column definition looks like this:
 ```php
 $this->add([
     'name' => 'Select',
-    'construct' => ['name', 'marketplace'],
-    'label' => 'Marketplace',
+    'construct' => ['name', 'product'],
+    'label' => 'Name',
 ]);
 ```
 
-### Select
 
-#### GROUP_CONCAT
+##### GROUP_CONCAT
+
+###### Doctrine
+Sometimes we need use built-in database functions for aggregate result. 
+For this purpose we need give ```\Zend\Db\Sql\Expression``` or ```\Doctrine\ORM\Query\Expr\Func``` as argument to ```Select``` column.
 ```php
 $this->add([
 	'name' => 'Select',
-	//'construct' => [new Doctrine\ORM\Query\Expr\\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // Doctrine usage
+	'construct' => [new Doctrine\ORM\Query\Expr\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // Doctrine usage
 	//'construct' => [new Doctrine\ORM\Query\Expr\Func('GROUP_CONCAT', ['serial.number']), 'serial_all'], // Doctrine usage
-	'construct' => [new Zend\Db\Sql\Expression ('GROUP_CONCAT(serial.number)'), 'serial_all'], // ZendTable usage
+	'label' => 'Serial Number',
+]);
+```
+
+**Advanced Usage**\
+Doctrine **DOES NOT** support expression below, use ZendTable instead of.
+```php
+$this->add([
+	'name' => 'Select',
+	//'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE 0 END']), 'serial_id'],
+]);
+```
+
+> Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
+
+
+###### ZendTable
+```php
+$this->add([
+	'name' => 'Select',
+	'construct' => [new \Zend\Db\Sql\Expression ('GROUP_CONCAT(serial.number)'), 'serial_all'],
 	'label' => 'Serial number',
 ]);
 ```
 
-```php
-$this->add([
-	'name' => 'Select',
-	// doctrine doesn't support this expression
-	//'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE 0 END']), 'serial_id'],
-	
-	// zend table usage
-	'construct' => [new Sql\Expression('GROUP_CONCAT(CASE WHEN serial.cartItemId > 0 THEN serial.number END)'), 'serial_id'],
-	'label' => 'Serial number',
-]);
-```
 
 
 ### Column Data Types
