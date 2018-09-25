@@ -83,8 +83,6 @@ return [
             'inlineformatter' => Column\Formatter\Inline::class,
             'ExternalLinkFormatter' => Column\Formatter\ExternalLink::class,
             'externallinkformatter' => Column\Formatter\ExternalLink::class,
-            'DropDownFormatter' => Column\Formatter\DropDown::class,
-            'dropdownformatter' => Column\Formatter\DropDown::class,
         ],
 
         'invokables' => [
@@ -124,7 +122,6 @@ return [
             Formatter\GenerateLink::class => Formatter\GenerateLink::class,
             Column\Formatter\Inline::class => Column\Formatter\Inline::class,
             Column\Formatter\ExternalLink::class => Column\Formatter\ExternalLink::class,
-            Column\Formatter\DropDown::class => Column\Formatter\DropDown::class,
         ],
 
         //'factories' => [
