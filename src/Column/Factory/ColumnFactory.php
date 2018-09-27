@@ -355,7 +355,7 @@ class ColumnFactory
      * @param $params
      * @return string
      */
-    public function prepareAttributeLink(Formatter\Link $formatter, $params)
+    public function prepareAttributeLink(/*Formatter\Link*/ $formatter, $params)
     {
         if (!is_array($params)) {
             return $params;
