@@ -567,7 +567,7 @@ $this->add([
 $this->add([
     'name' => 'Select',
     'construct' => ['value', 'handbook'],
-    'label' => 'Order Type',
+    'label' => 'MarketOrder Type',
     'filter_select_options' => [
         'options' => [
             'object_manager' => $this->getObjectManager(),

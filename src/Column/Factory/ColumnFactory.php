@@ -156,10 +156,11 @@ class ColumnFactory
 
             // @link http://stackoverflow.com/a/2409288/1335142
             //if (version_compare(phpversion(), '7.0.0', '>=')) {
-            //	$object = new $className(eval('...') . $config['construct']);
+            	//$object = new $className(eval('...') . $config['construct']);
+            	$object = new $className(...$config['construct']);
             //} else {
-            $reflect = new \ReflectionClass($className);
-            $object = $reflect->newInstanceArgs($config['construct']);
+            //$reflect = new \ReflectionClass($className);
+            //$object = $reflect->newInstanceArgs($config['construct']);
             //}
         } else {
             $object = $gpm->get($className);
@@ -237,10 +238,14 @@ class ColumnFactory
             }
 
             $suffix = ucfirst($filter->filter($key));
-            // create sub objects: action, formatter etc.
+            // create sub objects: action, formatters, styles, type etc.
             if (method_exists($this, $method = 'create' . $suffix)) {
                 $options = $this->{$method}($value);
                 $object->{'set' . $suffix}($options);
+
+                if (method_exists($this, $method = 'delegate' . $suffix)) {
+                    $this->{$method}($object, $options, $value);
+                }
 
                 continue;
             }
@@ -453,6 +458,32 @@ class ColumnFactory
         $options = $this->getSimpler()->setContext($values)->asArrayValue($options['property'], $identifier);
 
         return [$options];
+    }
+
+    public function delegateFormatters(AbstractColumn $column, array $formatters, array $configs)
+    {
+        // Create Formatter\Delegator\LinkDelegator
+        $delegateConfig = [];
+        foreach ($formatters as $i => $formatter) {
+            $config = $configs[$i];
+            $delegateName = lcfirst($config['name']);
+            $delegateConfig['chain'][] = $delegateName;
+            foreach ($config as $name => $value) {
+                if ('name' == $name) {
+                    continue;
+                }
+                $fetched = $formatter->{'get' . ucfirst($name)}();
+                // By default jqGrid can use only one Formatter.
+                // Current multiple formatters support is experimental implementation
+                // and developer should use it on his own risk.
+                $delegateConfig[$delegateName][$name] = $fetched;
+            }
+        }
+
+        if ($delegateConfig) {
+            $column->setRendererParameter('formatter', 'chain', 'jqGrid');
+            $column->setRendererParameter('formatoptions', $delegateConfig, 'jqGrid');
+        }
     }
 
     public function isPlaceholder($value)

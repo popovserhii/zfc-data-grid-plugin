@@ -5,7 +5,7 @@ namespace Popov\ZfcDataGridPlugin\Column\Formatter;
 use ZfcDatagrid\Column\AbstractColumn;
 use ZfcDatagrid\Column\Formatter;
 
-class ExternalLink extends Formatter\link
+class ExternalLink extends Formatter\Link
 {
     /**
      * @param AbstractColumn $col
