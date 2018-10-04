@@ -46,7 +46,7 @@ class ColumnFactory
      */
     protected $deferredPreparation = [];
 
-    public function __construct(DataGridPluginManager $columnPluginManager, SimplerHelper $simpler, $config)
+    public function __construct(DataGridPluginManager $columnPluginManager, SimplerHelper $simpler, array $config = null)
     {
         $this->config = $config;
         $this->simpler = $simpler;

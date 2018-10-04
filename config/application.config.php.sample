@@ -1,5 +1,4 @@
 <?php
-namespace Popov\ZfcDataGrid;
 
 return [
     'service_listener_options' => [
@@ -7,13 +6,13 @@ return [
         [
             'service_manager' => 'DataGridPluginManager',
             'config_key' => 'data_grid_plugins',
-            'interface' => \Popov\ZfcDataGrid\Service\Plugin\DataGridPluginProviderInterface::class,
+            'interface' => \Popov\ZfcDataGridPlugin\Service\Plugin\DataGridPluginProviderInterface::class,
             'method' => 'getDataGridPluginConfig',
         ],
     ],
     'service_manager' => [
-        'factories' => [
-            'DataGridPluginManager' => \Popov\ZfcDataGrid\Service\Plugin\DataGridPluginFactory::class,
+        'factories' => [ // Important! You must use factory for compatibility with ZF3
+            'DataGridPluginManager' => \Popov\ZfcDataGridPlugin\Service\Plugin\DataGridPluginFactory::class,
         ],
-    ],
+    ]
 ];
