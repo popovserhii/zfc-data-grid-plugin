@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="Bootstrap.php" colors="true">
+	<testsuites>
+		<testsuite name="PopovTest/ZfcDataGridPlugin">
+			<!--<directory>./Column/Factory</directory>-->
+			<directory>./</directory>
+		</testsuite>
+	</testsuites>
+
+    <testsuites>
+        <testsuite name="ZendSkeletonApplication Test Suite">
+            <directory>./module/Application/test</directory>
+        </testsuite>
+        <testsuite name="Album">
+            <directory>./module/Album/test</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

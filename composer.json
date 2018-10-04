@@ -18,14 +18,18 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=5.5"
+    "php": ">=7.0"
   },
   "autoload": {
     "psr-4": {
       "Popov\\ZfcDataGridPlugin\\": "src/",
-      "PopovTest\\ZfcDataGridPlugin\\": "test/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "PopovTest\\ZfcDataGridPlugin\\": "test/"
+    }
+  }
   "extra": {
     "zf": {
 	  "component": "Popov\\ZfcDataGridPlugin",

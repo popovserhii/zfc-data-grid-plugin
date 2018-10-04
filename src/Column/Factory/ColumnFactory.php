@@ -10,17 +10,10 @@
 namespace Popov\ZfcDataGridPlugin\Column\Factory;
 
 use Closure;
-use Popov\ZfcDataGridPlugin\Column\Attribute\ColumnSelectOptionsAttribute;
-use Popov\ZfcDataGridPlugin\Column\Attribute\FilterSelectOptionsAttribute;
 use Popov\ZfcDataGridPlugin\Column\Attribute\SelectOptionsTrait;
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use ZfcDatagrid\Column\AbstractColumn;
-/*use ZfcDatagrid\Column\Select;
-use ZfcDatagrid\Column\Style;
-use ZfcDatagrid\Column\Formatter;*/
-use Popov\Simpler\SimplerHelper;
-use Popov\ZfcDataGridPlugin\Column\Formatter;
 use Popov\ZfcDataGridPlugin\Service\Plugin\DataGridPluginManager;
 
 class ColumnFactory

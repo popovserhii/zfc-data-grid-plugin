@@ -3,22 +3,20 @@
  * Flexible Column Factory
  *
  * @category Popov
- * @package Popov_ZfcDataGrid
+ * @package Popov_ZfcDataGridPlugin
  * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 19.12.15 17:44
  */
-namespace PopovTest\ZfcDataGrid\Column\Factory;
+namespace PopovTest\ZfcDataGridPlugin\Column\Factory;
 
-use Zend\Stdlib\Exception;
-use Zend\Stdlib\ArrayUtils;
-use Zend\ServiceManager\ServiceManager;
 use ZfcDatagrid\Column;
 use ZfcDatagrid\Column\Action;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Type;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Popov\Simpler\SimplerHelper;
 use Popov\ZfcDataGridPlugin\Column\Factory\ColumnFactory;
-use PopovTest\ZfcDataGrid\Bootstrap;
+use PopovTest\ZfcDataGridPlugin\Bootstrap;
 
 class ColumnFactoryTest extends TestCase
 {
@@ -29,7 +27,9 @@ class ColumnFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->factory = new ColumnFactory(Bootstrap::getServiceManager()->get('DataGridPluginManager'));
+        $gpm = Bootstrap::getServiceManager()->get('DataGridPluginManager');
+        $simpler = new SimplerHelper(); // @todo Remove. This dependency has been moved to separate class
+        $this->factory = new ColumnFactory($gpm, $simpler);
     }
 
     public function testCreateSelectColumnFromShortName()
@@ -81,7 +81,7 @@ FORMATTER;
         $column = $this->factory->create([
             'name' => 'Select',
             'construct' => ['code', 'product'],
-            'label' => 'Код Номенклатури',
+            'label' => 'Code',
             'width' => 2,
             'translation_enabled' => true,
             'user_sort_disabled' => true,
@@ -90,7 +90,7 @@ FORMATTER;
         ]);
 
         $this->assertEquals('product_code', $column->getUniqueId());
-        $this->assertEquals('Код Номенклатури', $column->getLabel());
+        $this->assertEquals('Code', $column->getLabel());
         $this->assertEquals(2, $column->getWidth());
         $this->assertEquals($formatter, $column->getRendererParameters()['formatter']);
         $this->assertTrue($column->isTranslationEnabled());
@@ -121,9 +121,6 @@ FORMATTER;
             ],
         ]);
 
-        //\Zend\Debug\Debug::dump($column->getType()->getAttributes()); die(__METHOD__);
-
-
         $this->assertEquals('product_price', $column->getUniqueId());
 
         $this->assertInstanceOf(Type\Number::class, $type = $column->getType());
@@ -145,7 +142,7 @@ FORMATTER;
             'actions' => [
                 [
                     'name' => 'Button',
-                    'link' => '/myLink/para1/:product_id:',
+                    'link' => ['href' => '/my-link/para1/%s', 'placeholder_column' => 'product_id'],
                 ],
             ],
         ]);
@@ -154,7 +151,7 @@ FORMATTER;
         $this->assertEquals('Create', $column->getLabel());
         $this->assertEquals(1, count($column->getActions()));
         $this->assertInstanceOf(Action\Button::class, $button = $column->getActions()[0]);
-        $this->assertEquals('/myLink/para1/:product_id:', $button->getLink());
+        $this->assertEquals('/my-link/para1/:product_id:', $button->getLink());
     }
 
     /*public function testCreateSelectColumnWithDefaultValues()
@@ -190,16 +187,5 @@ FORMATTER;
             ['select-action', 'selectaction'],
             ['link-action', 'linkaction'],
         ];
-    }
-
-    protected function overrideServiceManagerConfig(ServiceManager $sm, array $appendConfig)
-    {
-        $globalConfig = $sm->get('Config');
-        $allConfig = ArrayUtils::merge($globalConfig, $appendConfig);
-
-        // set Config service, service manager can't operate without it
-        $sm->setAllowOverride(true);
-        $sm->setService('Config', $allConfig);
-        $sm->setAllowOverride(false);
     }
 }

@@ -1,5 +1,6 @@
 <?php
-namespace PopovTest\ZfcDataGrid;
+
+namespace PopovTest\ZfcDataGridPlugin;
 
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
@@ -17,12 +18,12 @@ class Bootstrap
 
     public static function init()
     {
-        $zf2ModulePaths = [dirname(dirname(__DIR__))];
+        $zfModulePaths = [dirname(dirname(__DIR__))];
         if (($path = static::findParentPath('vendor'))) {
-            $zf2ModulePaths[] = $path;
+            $zfModulePaths[] = $path;
         }
-        if (($path = static::findParentPath('module')) !== $zf2ModulePaths[0]) {
-            $zf2ModulePaths[] = $path;
+        if (($path = static::findParentPath('module')) !== $zfModulePaths[0]) {
+            $zfModulePaths[] = $path;
         }
 
         static::initAutoloader();
@@ -30,17 +31,17 @@ class Bootstrap
         // use ModuleManager to load this module and it's dependencies
         $testConfig = [
             'module_listener_options' => [
-                'module_paths' => $zf2ModulePaths,
+                'module_paths' => $zfModulePaths,
             ],
             'modules' => [
                 'ZfcDatagrid',
-                'Popov\ZfcDataGrid',
+                'Popov\ZfcDataGridPlugin',
             ],
         ];
 
-        $applicationConfig = require('../config/application.config.php.sample');
+        $applicationConfig = require(__DIR__ . '/../config/application.config.php.sample');
 
-        $config = ArrayUtils::merge($testConfig, $applicationConfig);
+        $configuration = ArrayUtils::merge($testConfig, $applicationConfig);
 
         // if NEED use full project configuration
         #include $path . '/../init_autoloader.php';
@@ -55,12 +56,15 @@ class Bootstrap
         #static::$serviceManager = $serviceManager;
 
         // if NEED to use custom service manager
-        $serviceManager = new ServiceManager(new ServiceManagerConfig($config['service_manager']));
-        $serviceManager->setService('ApplicationConfig', $config);
+        $smConfig = isset($configuration['service_manager']) ? $configuration['service_manager'] : [];
+        $smConfig = new ServiceManagerConfig($smConfig);
+
+        $serviceManager = new ServiceManager();
+        $smConfig->configureServiceManager($serviceManager);
+        $serviceManager->setService('ApplicationConfig', $configuration);
         $serviceManager->get('ModuleManager')->loadModules();
         static::$serviceManager = $serviceManager;
     }
-
 
     public static function chroot()
     {
