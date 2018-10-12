@@ -43,6 +43,10 @@ class ColumnFactory
         return $this->columns;
     }
 
+    public function addColumn($column){
+        $this->columns[$column->getUniqueId()] = $column;
+    }
+
     /**
      * @var Closure[]
      */
@@ -109,7 +113,7 @@ class ColumnFactory
      *
      * @param AbstractColumn $column
      */
-    protected function runDeferredPreparation($column)
+    public function runDeferredPreparation($column)
     {
         foreach ($this->deferredPreparation as $key => $preparation) {
             if ($preparation($column)) {

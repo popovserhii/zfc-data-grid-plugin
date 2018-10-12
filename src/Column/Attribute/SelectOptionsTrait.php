@@ -16,6 +16,7 @@
 namespace Popov\ZfcDataGridPlugin\Column\Attribute;
 
 use Popov\ZfcDataGridPlugin\Column\Factory\ColumnFactory;
+use Zend\Stdlib\Exception\InvalidArgumentException;
 
 trait SelectOptionsTrait
 {
@@ -34,7 +35,10 @@ trait SelectOptionsTrait
         $options = $params['options'];
         $om = $options['object_manager'];
         $repository = $om->getRepository($options['target_class']);
-        if ($options['is_method']) {
+        if (isset($options['is_method']) && $options['is_method']) {
+            if (!isset($options['find_method']['name'])) {
+                throw new InvalidArgumentException(/*write message*/);
+            }
             $method = $options['find_method']['name'];
             $values = call_user_func_array([$repository, $method], $options['find_method']['params']);
         } else {

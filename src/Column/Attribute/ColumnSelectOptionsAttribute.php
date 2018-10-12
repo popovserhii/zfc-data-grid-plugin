@@ -17,6 +17,7 @@ namespace Popov\ZfcDataGridPlugin\Column\Attribute;
 
 use Popov\Simpler\SimplerHelperAwareInterface;
 use Popov\Simpler\SimplerHelperAwareTrait;
+use ZfcDatagrid\Column\AbstractColumn;
 
 class ColumnSelectOptionsAttribute implements SimplerHelperAwareInterface, AttributeInterface
 {

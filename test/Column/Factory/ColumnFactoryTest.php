@@ -28,8 +28,7 @@ class ColumnFactoryTest extends TestCase
     public function setUp()
     {
         $gpm = Bootstrap::getServiceManager()->get('DataGridPluginManager');
-        $simpler = new SimplerHelper(); // @todo Remove. This dependency has been moved to separate class
-        $this->factory = new ColumnFactory($gpm, $simpler);
+        $this->factory = new ColumnFactory($gpm, []);
     }
 
     public function testCreateSelectColumnFromShortName()
