@@ -29,7 +29,7 @@
     "psr-4": {
       "PopovTest\\ZfcDataGridPlugin\\": "test/"
     }
-  }
+  },
   "extra": {
     "zf": {
 	  "component": "Popov\\ZfcDataGridPlugin",
