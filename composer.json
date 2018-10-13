@@ -7,7 +7,6 @@
     "grid",
     "zfc-datagrid",
     "zfc-datagrid factory",
-    "agere"
   ],
   "authors": [
     {
@@ -22,7 +21,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Popov\\ZfcDataGridPlugin\\": "src/",
+      "Popov\\ZfcDataGridPlugin\\": "src/"
     }
   },
   "autoload-dev": {
