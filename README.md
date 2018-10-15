@@ -587,6 +587,34 @@ $this->add([
 ]);
 ```
 
+### DropDown in Edit Record
+**Doctrine**
+
+It's similar to `filter_select_options`. `column_select_options` adds dropdown with selected data to Edit Record form.
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['value', 'handbook'],
+    'label' => 'MarketOrder Type',
+    'column_select_options' => [
+        'options' => [
+            'object_manager' => $this->getObjectManager(),
+            'target_class' => Handbook::class,
+            'identifier' => 'value',
+            'property' => 'value',
+            'is_method' => true,
+            'find_method' => [
+                'name' => 'findAllByTypeId',
+                'params' => [
+                    'type' => 'purposeBid',
+                    'field' => 'type'
+                ],
+            ],
+        ],
+    ],
+]);
+```
+
 ### DatePicker in search panel
 At this moment DatePicker require partial settings. 
 You must carefully monitor the date formats. 
