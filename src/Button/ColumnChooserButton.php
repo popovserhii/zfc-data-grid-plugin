@@ -15,6 +15,61 @@
 
 namespace Popov\ZfcDataGridPlugin\Button;
 
-class ColumnChooserButton
+class ColumnChooserButton extends DefaultButton
 {
+    protected $caption = '';
+
+    //protected $icon = "ui-icon-calendar";
+    protected $icon = "glyphicon-list-alt";
+
+    protected $title = 'Column Chooser';
+
+    //    protected $options = [
+    //        'title' => 'Select columns',
+    //        'width' => 500,
+    //        'height' => 400,
+    //        'classname' => null,
+    //        'done' => '', //Function which will be called when the user press Ok button.
+    //        'msel' => 'multiselect',
+    //        'dlog' => 'dialog',
+    //        'dlog_opts' => '',
+    //        'cleanup' => '',
+    //    ];
+    protected $options = [
+        'width' => 550,
+        'dialog_opts' => [
+            'modal' => true,
+            'minWidth' => 470,
+            'height' => 470,
+            'show' => 'blind',
+            'hide' => 'explode',
+            'dividerLocation' => 0.5,
+        ],
+    ];
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions(array $options): void
+    {
+        foreach ($options as $option => $value) {
+            if ($this->options[$option] && is_array($this->options[$option])) {
+                foreach ($value as $subOpt => $subOptVal) {
+                    if ($this->options[$option][$subOpt]) {
+                        $this->options[$option][$subOpt] = $subOptVal;
+                    }
+                }
+            } elseif ($this->options[$option]) {
+                $this->options[$option] = $value;
+            }
+        }
+    }
 }

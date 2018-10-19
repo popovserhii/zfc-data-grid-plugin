@@ -2,6 +2,8 @@
 
 namespace Popov\ZfcDataGridPlugin;
 
+use Popov\ZfcDataGridPlugin\Button\ColumnChooserButton;
+use Popov\ZfcDataGridPlugin\Button\DefaultButton;
 use ZfcDatagrid;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column\Type;
@@ -91,6 +93,11 @@ return [
             'byvalueattribute' => Column\Attribute\ByValueAttribute::class,
             'LinkAttribute' => Column\Attribute\LinkAttribute::class,
             'linkattribute' => Column\Attribute\LinkAttribute::class,
+            // button
+            'DefaultButton' => DefaultButton::class,
+            'defaultbutton' => DefaultButton::class,
+            'ColumnChooserButton' => ColumnChooserButton::class,
+            'columnchooserbutton' => ColumnChooserButton::class,
         ],
         'invokables' => [
             // column
@@ -131,6 +138,9 @@ return [
             Column\Attribute\FilterSelectOptionsAttribute::class => Column\Attribute\FilterSelectOptionsAttribute::class,
             Column\Attribute\ByValueAttribute::class => Column\Attribute\ByValueAttribute::class,
             Column\Attribute\LinkAttribute::class => Column\Attribute\LinkAttribute::class,
+            // button
+            DefaultButton::class => DefaultButton::class,
+            ColumnChooserButton::class => ColumnChooserButton::class,
         ],
         'factories' => [
             //Type\DateTime::class => Column\Type\Factory\DateTimeFactory::class,
