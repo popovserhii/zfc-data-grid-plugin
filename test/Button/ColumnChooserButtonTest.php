@@ -22,6 +22,7 @@ use PopovTest\ZfcDataGridPlugin\Bootstrap;
 
 class ColumnChooserButtonTest extends TestCase
 {
+
     /**
      * @var ColumnFactory
      */
