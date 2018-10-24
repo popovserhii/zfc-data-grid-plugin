@@ -15,6 +15,14 @@
 
 namespace Popov\ZfcDataGridPlugin\Button;
 
-class ColumnChooserButton
+class ColumnChooserButton extends DefaultButton
 {
+    protected $caption = '';
+
+    //protected $icon = "ui-icon-calendar";
+    protected $icon = "glyphicon-list-alt";
+
+    protected $title = 'Column Chooser';
+
+    protected $options = [];
 }

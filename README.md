@@ -675,3 +675,33 @@ $this->add([
 
 
 ```
+## Buttons
+### Buttons Introduction
+Custom buttons for `ZfcDataGrid`.
+
+#### Column Chooser
+Object notation:
+```php
+$button = new ColumnChooserButton();
+        $button->setTitle('Choose columns');
+        $button->setCaption('Choose');
+        $button->setOptions([
+                'width' => 500,
+                'height' => 300,
+        ]);
+```
+
+Config notation:
+```php
+$this->addButton([
+            'name' => 'ColumnChooser',
+            'title' => 'Choose columns',
+            'caption' => 'Choose',
+            'options' => [
+                [
+                    'width' => 500,
+                    'height' => 300,
+                ],
+            ],
+        ]);
+```

@@ -10,6 +10,7 @@
 namespace Popov\ZfcDataGridPlugin\Column\Factory;
 
 use Closure;
+use Popov\ZfcDataGridPlugin\Button\DefaultButton;
 use Popov\ZfcDataGridPlugin\Column\Attribute\SelectOptionsTrait;
 use Zend\Stdlib\Exception;
 use Zend\Filter\Word\SeparatorToCamelCase;
@@ -34,6 +35,11 @@ class ColumnFactory
      * @var AbstractColumn[]
      */
     protected $columns;
+
+    /**
+     * @var DefaultButton[]
+     */
+    protected $buttons;
 
     /**
      * @return AbstractColumn[]
@@ -71,11 +77,20 @@ class ColumnFactory
     public function create($config)
     {
         $column = $this->doCreate($config, 'Column');
+
         $this->columns[$column->getUniqueId()] = $column;
 
         $this->runDeferredPreparation($column);
 
         return $column;
+    }
+
+    public function createButton($config)
+    {
+        $button = $this->doCreate($config, 'Button');
+        $this->buttons[$button->getCaption()] = $button;
+
+        return $button;
     }
 
     /**
@@ -156,8 +171,8 @@ class ColumnFactory
 
             // @link http://stackoverflow.com/a/2409288/1335142
             //if (version_compare(phpversion(), '7.0.0', '>=')) {
-            	//$object = new $className(eval('...') . $config['construct']);
-            	$object = new $className(...$config['construct']);
+            //$object = new $className(eval('...') . $config['construct']);
+            $object = new $className(...$config['construct']);
             //} else {
             //$reflect = new \ReflectionClass($className);
             //$object = $reflect->newInstanceArgs($config['construct']);
