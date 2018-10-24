@@ -8,46 +8,69 @@
  * https://opensource.org/licenses/MIT
  *
  * @category Popov
- * @package Popov_<package>
+ * @package Popov_ZfcDataGrid
  * @author Serhii Popov <popow.serhii@gmail.com>
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 namespace Popov\ZfcDataGridPlugin\Button;
 
+use Zend\Filter\Word\CamelCaseToDash;
+
 abstract class DefaultButton
 {
-    protected $caption = "NewButton";
+    protected $caption = '';
 
-    //protected $icon = "ui-icon-newwin";
-    protected $icon = "glyphicon-file";
+    protected $title = 'New Button';
+
+    protected $icon = 'glyphicon-file';
 
     protected $position = 100;
 
-    protected $title = "";
-
-    protected $cursor = "pointer";
+    protected $cursor = 'pointer';
 
     protected $id = null;
 
-    protected $name;
+    protected $name = '';
 
     protected $options = [];
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCaption()
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return DefaultButton
+     */
+    public function setTitle(string $title): DefaultButton
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCaption(): string
     {
         return $this->caption;
     }
 
     /**
-     * @param mixed $caption
+     * @param string $caption
+     * @return DefaultButton
      */
-    public function setCaption($caption): void
+    public function setCaption(string $caption): DefaultButton
     {
         $this->caption = $caption;
+
+        return $this;
     }
 
     /**
@@ -60,62 +83,55 @@ abstract class DefaultButton
 
     /**
      * @param string $icon
+     * @return DefaultButton
      */
-    public function setIcon(string $icon): void
+    public function setIcon(string $icon): DefaultButton
     {
         $this->icon = $icon;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
 
     /**
-     * @param mixed $position
+     * @param int $position
+     * @return DefaultButton
      */
-    public function setPosition($position): void
+    public function setPosition(int $position): DefaultButton
     {
         $this->position = $position;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title): void
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCursor()
+    public function getCursor(): string
     {
         return $this->cursor;
     }
 
     /**
-     * @param mixed $cursor
+     * @param string $cursor
+     * @return DefaultButton
      */
-    public function setCursor($cursor): void
+    public function setCursor(string $cursor): DefaultButton
     {
         $this->cursor = $cursor;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null
      */
     public function getId()
     {
@@ -123,11 +139,14 @@ abstract class DefaultButton
     }
 
     /**
-     * @param mixed $id
+     * @param null $id
+     * @return DefaultButton
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -135,11 +154,12 @@ abstract class DefaultButton
      */
     public function getName()
     {
-        $class = get_class($this);
-        $className = explode('\\', $class);
-        $name = end($className);
-        $name = lcfirst(str_replace('Button', '', $name));
-        $this->name = $name;
+        if (!$this->name) {
+            $parts = explode('\\', get_class($this));
+            $name = end($parts);
+            $name = lcfirst(str_replace('Button', '', $name));
+            $this->name = $name;
+        }
 
         return $this->name;
     }

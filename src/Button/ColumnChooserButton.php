@@ -8,7 +8,7 @@
  * https://opensource.org/licenses/MIT
  *
  * @category Popov
- * @package Popov_<package>
+ * @package Popov_ZfcDataGrid
  * @author Serhii Popov <popow.serhii@gmail.com>
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
@@ -17,12 +17,7 @@ namespace Popov\ZfcDataGridPlugin\Button;
 
 class ColumnChooserButton extends DefaultButton
 {
-    protected $caption = '';
-
-    //protected $icon = "ui-icon-calendar";
-    protected $icon = "glyphicon-list-alt";
-
     protected $title = 'Column Chooser';
 
-    protected $options = [];
+    protected $icon = "glyphicon-list-alt";
 }
