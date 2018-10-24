@@ -32,11 +32,8 @@ abstract class DefaultButton
 
     protected $name;
 
-<<<<<<< HEAD
     protected $options = [];
 
-=======
->>>>>>> f4ea09826dfb9231bf3bf46c4f58c3429ed05969
     /**
      * @return mixed
      */
@@ -146,7 +143,6 @@ abstract class DefaultButton
 
         return $this->name;
     }
-<<<<<<< HEAD
 
     /**
      * @return array
@@ -162,10 +158,8 @@ abstract class DefaultButton
      */
     public function setOptions(array $options): self
     {
-        $this->options = $options;
+        $this->options = array_merge($this->options, $options);
 
         return $this;
     }
-=======
->>>>>>> f4ea09826dfb9231bf3bf46c4f58c3429ed05969
 }
