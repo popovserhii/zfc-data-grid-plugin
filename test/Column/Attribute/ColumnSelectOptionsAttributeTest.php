@@ -8,8 +8,9 @@
  * https://opensource.org/licenses/MIT
  *
  * @category Popov
- * @package Popov_<package>
+ * @package Popov_ZfcDataGridPlugin
  * @author Serhii Popov <popow.serhii@gmail.com>
+ * @author Andrey Andreev <andrey.andreev1995@gmail.com>
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace PopovTest\ZfcDataGridPlugin\Column\Attribute;
