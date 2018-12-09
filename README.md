@@ -641,6 +641,8 @@ $this->add([
 ]);
 ```
 
+>Notice. Intl use default ISO date format (RFC 822). Detailed format explanation you can find in [ZF documentation](https://framework.zend.com/manual/1.12/en/zend.date.constants.html#zend.date.constants.selfdefinedformats). 
+
 
 ### Grid Data Sorting
 

@@ -19,5 +19,9 @@ class ColumnChooserButton extends DefaultButton
 {
     protected $title = 'Column Chooser';
 
-    protected $icon = "glyphicon-list-alt";
+    /**
+     * @todo Use iconSet.inlinedit.icon_cancel_nav for compatibility with styleUI change
+     * @see https://stackoverflow.com/questions/53120312/how-to-change-group-of-css-items-in-jqgrid
+     */
+    protected $icon = 'fa-table';
 }

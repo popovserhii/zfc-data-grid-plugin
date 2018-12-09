@@ -31,7 +31,7 @@
   },
   "extra": {
     "zf": {
-	  "component": "Popov\\ZfcDataGridPlugin",
+	  "gridComponent": "Popov\\ZfcDataGridPlugin",
       "config-provider": "Popov\\ZfcDataGridPlugin\\ConfigProvider"
     }
   }
