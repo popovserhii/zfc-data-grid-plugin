@@ -165,6 +165,23 @@ abstract class DefaultButton
     }
 
     /**
+     * @param $name
+     * @param $value
+     * @return $this
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+
+        return $this;
+    }
+
+    public function getOption($name)
+    {
+        return $this->options[$name] ?? null;
+    }
+
+    /**
      * @return array
      */
     public function getOptions(): array

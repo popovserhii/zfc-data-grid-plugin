@@ -24,4 +24,10 @@ class ColumnChooserButton extends DefaultButton
      * @see https://stackoverflow.com/questions/53120312/how-to-change-group-of-css-items-in-jqgrid
      */
     protected $icon = 'fa-table';
+
+    public function setUrl(string $url)
+    {
+        return $this->setOption('editUrl', $url);
+    }
+
 }

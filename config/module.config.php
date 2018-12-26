@@ -2,14 +2,14 @@
 
 namespace Popov\ZfcDataGridPlugin;
 
-use Popov\ZfcDataGridPlugin\Button\ColumnChooserButton;
-use Popov\ZfcDataGridPlugin\Button\DefaultButton;
+
 use ZfcDatagrid;
 use ZfcDatagrid\Filter;
 use ZfcDatagrid\Column\Type;
 use ZfcDatagrid\Column\Style;
 use ZfcDatagrid\Column\Action;
 use ZfcDatagrid\Column\Formatter;
+use Popov\ZfcDataGridPlugin\Button;
 use Popov\ZfcDataGridPlugin\Column\Formatter\Deputy;
 
 return [
@@ -93,11 +93,13 @@ return [
             'byvalueattribute' => Column\Attribute\ByValueAttribute::class,
             'LinkAttribute' => Column\Attribute\LinkAttribute::class,
             'linkattribute' => Column\Attribute\LinkAttribute::class,
+            'urlattribute' => Column\Attribute\UrlAttribute::class,
+            'UrlAttribute' => Column\Attribute\UrlAttribute::class,
             // button
-            'DefaultButton' => DefaultButton::class,
-            'defaultbutton' => DefaultButton::class,
-            'ColumnChooserButton' => ColumnChooserButton::class,
-            'columnchooserbutton' => ColumnChooserButton::class,
+            'DefaultButton' => Button\DefaultButton::class,
+            'defaultbutton' => Button\DefaultButton::class,
+            'ColumnChooserButton' => Button\ColumnChooserButton::class,
+            'columnchooserbutton' => Button\ColumnChooserButton::class,
         ],
         'invokables' => [
             // column
@@ -139,12 +141,15 @@ return [
             Column\Attribute\ByValueAttribute::class => Column\Attribute\ByValueAttribute::class,
             Column\Attribute\LinkAttribute::class => Column\Attribute\LinkAttribute::class,
             // button
-            DefaultButton::class => DefaultButton::class,
-            ColumnChooserButton::class => ColumnChooserButton::class,
+            Button\DefaultButton::class => Button\DefaultButton::class,
+            Button\ColumnChooserButton::class => Button\ColumnChooserButton::class,
         ],
         'factories' => [
             //Type\DateTime::class => Column\Type\Factory\DateTimeFactory::class,
             //Column\Attribute\FilterSelectOptionsAttribute::class => Column\Attribute\Factory\SelectOptionsAttributeFactory::class,
+
+            // attributes
+            Column\Attribute\UrlAttribute::class => Column\Attribute\Factory\UrlAttributeFactory::class
         ],
         'delegators' => [
             Column\Attribute\FilterSelectOptionsAttribute::class => [
@@ -154,10 +159,23 @@ return [
             Column\Attribute\ColumnSelectOptionsAttribute::class => [
                 \Popov\Simpler\Factory\SimplerHelperDelegatorFactory::class,
             ],
+            /*Button\ColumnChooserButton::class => [
+                Button\Factory\ColumnChooserButtonDelegatorFactory::class
+            ]*/
         ],
         //'abstract_factories' => []
     ],
     'data_grid_plugins_config' => [
+        Button\ColumnChooserButton::class => [
+            'url' => [
+                'route' => 'admin/default',
+                'params' => [
+                    'controller' => 'data-grid',
+                    'action' => 'buttons',
+                ],
+                'options' => ['force_canonical' => true],
+            ],
+        ],
         Type\DateTime::class => [
             'output_pattern' => 'yyyy-MM-dd HH:mm',
             'source_date_time_format' => 'Y-m-d H:i',

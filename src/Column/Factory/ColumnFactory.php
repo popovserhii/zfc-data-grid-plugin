@@ -149,7 +149,7 @@ class ColumnFactory
             $config = ['name' => $config];
         }
 
-        if (/*is_array($config) && */(!isset($config['name']) || !$config['name'])) {
+        if ((!isset($config['name']) || !$config['name'])) {
             throw new Exception\RuntimeException($group . ' "name" key must be set and cannot be empty');
         }
 
