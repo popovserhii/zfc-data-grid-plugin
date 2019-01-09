@@ -13,7 +13,6 @@ use Popov\ZfcDataGridPlugin\Button;
 use Popov\ZfcDataGridPlugin\Column\Formatter\Deputy;
 
 return [
-    // Middleware way
     'dependencies' => [
         'aliases' => [
             'DataGridPluginManager' => Service\Plugin\DataGridPluginManager::class,
