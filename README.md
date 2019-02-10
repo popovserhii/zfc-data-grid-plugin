@@ -646,24 +646,24 @@ $this->add([
 
 ### Grid Data Sorting
 
-Default grid data sort can be set with `sortDefault` option. 
+Default grid data sort can be set with `sort_default` option. 
 `ASC` sort order will be applied to column `position` only if any other user filters did not apply before.
 ```php
 $this->add([
     'name' => 'Select',
     'construct' => ['position', 'product'],
     'label' => 'Position',
-    'sortDefault' => [1, 'ASC']
+    'sort_default' => [1, 'ASC']
 ]);
 ```
 
-Also several default sort orders can be set, simply apply `sortDefault` to relative columns
+Also several default sort orders can be set, simply apply `sort_default` to relative columns
 ```php
 $this->add([
     'name' => 'Select',
     'construct' => ['inStock', 'product'],
     'label' => 'Position',
-    'sortDefault' => [1, 'DESC']
+    'sort_default' => [1, 'DESC']
 ]);
 ```
 
@@ -672,11 +672,29 @@ $this->add([
     'name' => 'Select',
     'construct' => ['position', 'product'],
     'label' => 'Position',
-    'sortDefault' => [2, 'ASC']
+    'sort_default' => [2, 'ASC']
 ]);
-
-
 ```
+
+
+### Grid Data Filtering
+
+Default grid data sort can be set with `filter_default_operation` option. 
+
+`like` filter will be applied by default if any other user filters did not apply before.
+
+> Notice! There is [issue](https://github.com/popovserhii/zfc-data-grid/issues/2) which don't allow apply filter from client side. 
+
+```php
+$this->add([
+    'name' => 'Select',
+    'construct' => ['sku', 'product'],
+    'label' => 'SKU',
+    'filter_default_operation' => \ZfcDatagrid\Filter::EQUAL
+]);
+```
+
+
 ## Buttons
 ### Buttons Introduction
 Custom buttons for `ZfcDataGrid`.
