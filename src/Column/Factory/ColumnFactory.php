@@ -273,8 +273,8 @@ class ColumnFactory
 
             $method = 'set' . $suffix;
             if (is_array($value)) {
-                if (!method_exists($object, 'set' . $suffix)
-                    && !method_exists($object, 'add' . $suffix)
+                if (!method_exists($object, $method = 'set' . $suffix)
+                    && !method_exists($object, $method = 'add' . $suffix)
                     //&& !(method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix))
                     && !$gpm->has($suffix . 'Attribute')
                 ) {
