@@ -346,7 +346,7 @@ $this->add([
     'construct' => ['name', 'product'],
     'label' => 'Name',
     'styles' => [[
-        'name' => 'Bold',
+        'name' => 'Color',
         'consturct' => [200, 200, 200]
     ]],
 ]);
