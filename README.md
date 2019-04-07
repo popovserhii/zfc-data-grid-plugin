@@ -209,7 +209,7 @@ $this->add([
 ]);
 ```
 
-**Advanced Usage**
+**Advanced Usage**\
 Doctrine **DOES NOT** support expression below and throw Exception `[Syntax Error] line 0, col 218: Error: Unexpected 'NULL'`:
 ```php
 $this->add([
