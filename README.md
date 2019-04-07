@@ -209,14 +209,26 @@ $this->add([
 ]);
 ```
 
-**Advanced Usage**\
-Doctrine **DOES NOT** support expression below, use ZendTable instead of.
+**Advanced Usage**
+Doctrine **DOES NOT** support expression below and throw Exception `[Syntax Error] line 0, col 218: Error: Unexpected 'NULL'`:
 ```php
 $this->add([
 	'name' => 'Select',
-	//'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE 0 END']), 'serial_id'],
+	// @see https://github.com/doctrine/orm/issues/5801
+	'construct' => [new Expr\Func('GROUP_CONCAT', ['CASE WHEN serial.cartItem > 0 THEN serial.number ELSE NULL END']), 'serial_id'],
 ]);
 ```
+ Insteat of example above you can use `NULLIF` operator (which [is supported](https://github.com/doctrine/doctrine2/blob/v2.5.4/lib/Doctrine/ORM/Query/Parser.php#L1936)):
+ ```php
+$this->add([
+	'name' => 'Select',
+	'construct' => [
+		new Expr\Select("GROUP_CONCAT(CASE WHEN serial.cartItem > 0 THEN serial.number ELSE NULLIF(1,1) END SEPARATOR ' ')"),
+		'serial_id'
+	],
+]);
+ ```
+
 
 > Notice: Some functions like GROUP_CONCAT is represented only in one database so Doctrine don't support it by default so you need include [relative package](https://github.com/orocrm/doctrine-extensions) to you project.
 
