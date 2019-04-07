@@ -203,8 +203,9 @@ For this purpose we need give ```\Zend\Db\Sql\Expression``` or ```\Doctrine\ORM\
 ```php
 $this->add([
 	'name' => 'Select',
-	'construct' => [new Doctrine\ORM\Query\Expr\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // Doctrine usage
-	//'construct' => [new Doctrine\ORM\Query\Expr\Func('GROUP_CONCAT', ['serial.number']), 'serial_all'], // Doctrine usage
+	'construct' => [new \Doctrine\ORM\Query\Expr\Select("GROUP_CONCAT(serial.number)"), 'serial_all'], // Doctrine usage
+	// or 
+	'construct' => [new \Doctrine\ORM\Query\Expr\Func('GROUP_CONCAT', ['serial.number']), 'serial_all'], // Doctrine usage
 	'label' => 'Serial Number',
 ]);
 ```
@@ -222,10 +223,7 @@ $this->add([
  ```php
 $this->add([
 	'name' => 'Select',
-	'construct' => [
-		new Expr\Select("GROUP_CONCAT(CASE WHEN serial.cartItem > 0 THEN serial.number ELSE NULLIF(1,1) END SEPARATOR ' ')"),
-		'serial_id'
-	],
+	'construct' => [new Expr\Select('GROUP_CONCAT(CASE WHEN serial.cartItem > 0 THEN serial.number ELSE NULLIF(1,1) END)'), 'serial_id'],
 ]);
  ```
 
