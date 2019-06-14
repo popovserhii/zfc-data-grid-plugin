@@ -272,12 +272,10 @@ class ColumnFactory
             }
 
             $method = 'set' . $suffix;
-            if (is_array($value)) {
-                if (!method_exists($object, $method = 'set' . $suffix)
-                    && !method_exists($object, $method = 'add' . $suffix)
-                    //&& !(method_exists($this, $prepareMethod = 'prepareAttribute' . $suffix))
-                    && !$gpm->has($suffix . 'Attribute')
-                ) {
+            if (!method_exists($object, $method = 'set' . $suffix)
+                && !method_exists($object, $method = 'add' . $suffix)
+            ) {
+                if (!$gpm->has($suffix . 'Attribute') && is_array($value)) {
                     // setter for array options like attributes which need be set peer iteration
                     $suffix = ($suffix[($suffixLen = strlen($suffix)) - 1] === 's')
                         ? substr($suffix, 0, $suffixLen - 1)  // to singular (remove "s")
@@ -317,7 +315,8 @@ class ColumnFactory
                     $this->configPrepareAttribute($suffix, $object, $method, $value);
                 }
             } else {
-                $object->{$method}($value);
+                //$object->{$method}($value);
+                $this->configPrepareAttribute($suffix, $object, $method, $value);
             }
         }
     }

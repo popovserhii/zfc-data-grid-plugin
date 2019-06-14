@@ -11,6 +11,7 @@ use ZfcDatagrid\Column\Action;
 use ZfcDatagrid\Column\Formatter;
 use Popov\ZfcDataGridPlugin\Button;
 use Popov\ZfcDataGridPlugin\Column\Formatter\Deputy;
+use Popov\ZfcDataGridPlugin\View\Helper\SummarizerHelper;
 
 return [
     'dependencies' => [
@@ -94,6 +95,8 @@ return [
             'linkattribute' => Column\Attribute\LinkAttribute::class,
             'urlattribute' => Column\Attribute\UrlAttribute::class,
             'UrlAttribute' => Column\Attribute\UrlAttribute::class,
+            'summaryattribute' => Column\Attribute\SummaryAttribute::class,
+            'SummaryAttribute' => Column\Attribute\SummaryAttribute::class,
             // button
             'DefaultButton' => Button\DefaultButton::class,
             'defaultbutton' => Button\DefaultButton::class,
@@ -139,6 +142,7 @@ return [
             Column\Attribute\FilterSelectOptionsAttribute::class => Column\Attribute\FilterSelectOptionsAttribute::class,
             Column\Attribute\ByValueAttribute::class => Column\Attribute\ByValueAttribute::class,
             Column\Attribute\LinkAttribute::class => Column\Attribute\LinkAttribute::class,
+            Column\Attribute\SummaryAttribute::class => Column\Attribute\SummaryAttribute::class,
             // button
             Button\DefaultButton::class => Button\DefaultButton::class,
             Button\ColumnChooserButton::class => Button\ColumnChooserButton::class,
@@ -190,5 +194,14 @@ return [
                 ],
             ],
         ],
+    ],
+
+    'view_helpers' => [
+        'aliases' => [
+            'gridSummarizer' => SummarizerHelper::class,
+        ],
+        'factories' => [
+            SummarizerHelper::class => \Popov\ZfcDataGridPlugin\View\Helper\Factory\SummarizerHelperFactory::class
+        ]
     ],
 ];
