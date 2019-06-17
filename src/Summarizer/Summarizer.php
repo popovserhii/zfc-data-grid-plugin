@@ -24,24 +24,47 @@ class Summarizer
     /** @var QueryBuilder $dataSource */
     protected $dataSource;
 
-    /** @var Select $select */
+    /** @var Select[] $select */
     protected $select;
 
-    public function summarize($operation) {
+    /**
+     * This method prepare columns summary information based on column operation(e.g. SUM, AVG, COUNT, MAX).
+     *
+     * @return null|array
+     */
+    public function summarize() {
         $result = null;
         if (isset($this->dataSource) && isset($this->select)) {
-            if ($operation == "SUM") {
-                $this->dataSource->select('SUM(' . $this->select->getSelectPart1() . '.'
-                    . $this->select->getSelectPart2() . ') AS '
-                    . $this->select->getSelectPart2());
+            $selects = [];
+            $this->dataSource->resetDQLPart('select');
 
-                $this->dataSource->resetDQLPart('orderBy');
+            foreach ($this->select as $item) {
+                $selects[$item->getSelectPart2()] = $item->getUniqueId();
+                $this->makeSelect($item->getRendererParameters()['summarizer'], $item);
+            }
 
-                $result = number_format($this->dataSource->getQuery()->getSingleScalarResult(), 2, '.', '');
+            $this->dataSource->resetDQLPart('orderBy');
+            $queryResult = $this->dataSource->getQuery()->getResult()[0];
+
+            foreach ($queryResult as $key => $value) {
+                $result[$selects[$key]] = number_format($value, 2, '.', '');
             }
         }
 
         return $result;
+    }
+
+    /**
+     * This method used to make one general select for all columns with summary fields.
+     *
+     * @param $operation
+     * @param Select $item
+     */
+    public function makeSelect($operation, $item)
+    {
+        $this->dataSource->addSelect($operation . '(' . $item->getSelectPart1() . '.'
+            . $item->getSelectPart2() . ') AS '
+            . $item->getSelectPart2());
     }
 
     /**
@@ -64,7 +87,7 @@ class Summarizer
     }
 
     /**
-     * @return Select
+     * @return Select[]
      */
     public function getSelect()
     {
@@ -72,7 +95,7 @@ class Summarizer
     }
 
     /**
-     * @param Select $select
+     * @param Select[] $select
      * @return Summarizer
      */
     public function setSelect($select)
