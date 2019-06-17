@@ -37,7 +37,7 @@ class Summarizer
 
                 $this->dataSource->resetDQLPart('orderBy');
 
-                $result[$this->select->getUniqueId()] = number_format($this->dataSource->getQuery()->getSingleScalarResult(), 2, '.', '');
+                $result = number_format($this->dataSource->getQuery()->getSingleScalarResult(), 2, '.', '');
             }
         }
 
